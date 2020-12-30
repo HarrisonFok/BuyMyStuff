@@ -1,3 +1,4 @@
 npx create-react-app frontend
-
-bootswatch.com - Cerulean theme
+- bootswatch.com - Cerulean theme
+npm i --save react-bootstrap
+- https://cdnjs.com/ -> fontawesome -> copy link tag
