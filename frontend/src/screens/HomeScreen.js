@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from '../actions/productActions';
 import {Row, Col} from "react-bootstrap"
 import Product from "../components/Product";
+import Message from '../components/Message';
+import Loader from '../components/Loader';
 
 const HomeScreen = () => {
     // const [products, setProducts] = useState([]);
@@ -28,7 +30,7 @@ const HomeScreen = () => {
         <>
             <h1>My Products</h1>
             {/* if error then output error */}
-            {loading ? <h2>Loading...</h2> : error ? <h3>{error}</h3> : 
+            {loading ? <Loader /> : error ? <Message variant="danger">{error}</Message> : 
                     (
                         <Row>
                             {products.map(product => (
