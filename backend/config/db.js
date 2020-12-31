@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import colors from 'colors';
 
 // async because when we do .connect, .find etc., it'll always return a promise
 const connectDB = async () => {
