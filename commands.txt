@@ -1,6 +1,14 @@
 npx create-react-app frontend
+
 - bootswatch.com - Cerulean theme
+
 npm i --save react-bootstrap
+
 - https://cdnjs.com/ -> fontawesome -> copy link tag
+
 npm i --save react-router-dom
+==> this helps to prevent the page from reloading - we want a single-page application
+==> eg. Link
+
 npm i --save react-router-bootstrap
+==> contains stuff like Row, Col, Image, ListGroup, Card, Button
