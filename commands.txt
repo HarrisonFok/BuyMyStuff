@@ -19,3 +19,4 @@ In root,
 npm i --save express
 npm i --save axios
 npm i --save -D nodemon concurrently
+npm i --save dotenv
