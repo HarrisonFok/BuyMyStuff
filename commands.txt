@@ -18,3 +18,4 @@ mkdir backend -> npm init
 In root,
 npm i --save express
 npm i --save axios
+npm i --save -D nodemon concurrently
