@@ -22,3 +22,10 @@ npm i --save -D nodemon concurrently
 npm i --save dotenv
 npm i --save mongoose
 npm i --save bcryptjs -> there are more dependencies with bcrypt
+npm i --save express-async-handler
+
+In frontend,
+npm i --save redux react-redux redux-devtools-extension redux-thunk 
+
+npm i --save redux-thunk 
+==> allows to make async requests
