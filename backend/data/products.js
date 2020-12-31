@@ -1,6 +1,5 @@
 const products = [
   {
-    _id: '1',
     name: 'Pink doll',
     image: '/images/doll1.jpg',
     description:
@@ -13,7 +12,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '2',
     name: 'Turtle doll',
     image: '/images/doll2.jpg',
     description:
@@ -26,7 +24,6 @@ const products = [
     numReviews: 8,
   },
   {
-    _id: '3',
     name: 'Rose',
     image: '/images/flower1.jpg',
     description:
@@ -39,7 +36,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '4',
     name: 'Wrapped flowers',
     image: '/images/flower2.jpg',
     description:
@@ -52,7 +48,6 @@ const products = [
     numReviews: 12,
   },
   {
-    _id: '5',
     name: 'Headphones',
     image: '/images/headphones.jpg',
     description:
@@ -65,7 +60,6 @@ const products = [
     numReviews: 10,
   },
   {
-    _id: '6',
     name: 'Keyboard',
     image: '/images/keyboard.jpg',
     description:
