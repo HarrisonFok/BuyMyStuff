@@ -29,3 +29,6 @@ npm i --save redux react-redux redux-devtools-extension redux-thunk
 
 npm i --save redux-thunk 
 ==> allows to make async requests
+
+Pattern: constants, reducer, action, fire off in component
+- action is what we do in useEffect (i.e. what to do when the page loads) - eg. fetching the data - and then dispatch action to the reducer
