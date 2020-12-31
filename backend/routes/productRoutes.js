@@ -19,7 +19,9 @@ router.get("/:id", asyncHandler(async (req, res) => {
     if (product) {
         res.json(product)
     } else {
-        res.status(404).json({message: "Product not found"})
+        // With the custom handler, we can set the status first, and throw the error
+        res.status(404) //500 by default
+        throw new Error("Product not found")
     }
 }))
 
