@@ -9,7 +9,7 @@ const products = [
     category: 'Dolls',
     price: 10.00,
     countInStock: 1,
-    rating: 5,
+    rating: 4.5,
     numReviews: 12,
   },
   {
@@ -35,7 +35,7 @@ const products = [
     category: 'Flowers',
     price: 5.00,
     countInStock: 1,
-    rating: 5,
+    rating: 4.5,
     numReviews: 12,
   },
   {
@@ -48,7 +48,7 @@ const products = [
     category: 'Flowers',
     price: 10.00,
     countInStock: 1,
-    rating: 5,
+    rating: 4.5,
     numReviews: 12,
   },
   {
@@ -74,7 +74,7 @@ const products = [
     category: 'Electronics',
     price: 20.00,
     countInStock: 1,
-    rating: 5,
+    rating: 3,
     numReviews: 12,
   },
 ]
