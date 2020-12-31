@@ -1,12 +1,27 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link } from "react-router-dom";
 import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
 import Rating from '../components/Rating';
-import products from '../products';
+import axios from "axios";
 
 const ProductScreen = ({match}) => {
     // match.params.id because we put /:id in the URL
-    const product = products.find(p => p._id === match.params.id)
+    const [product, setProduct] = useState({})
+
+    // useEffect to make a request to the backend
+    // - executed whenever the page is loaded
+    // - however, it's complaining because it's looking at localhost:3000 (need to add proxy)
+    useEffect(() => {
+        const fetchProduct = async () => {
+            // that returns a promise, so we use await
+            // can't make useEffect async, so we create a function
+            const {data} = await axios.get(`/api/products/${match.params.id}`)
+            // change the list of products from the empty array to the data we get back from the endpoint
+            setProduct(data);
+        }
+        fetchProduct()
+    }, [])
+
     return (
         <>
             <Link className="btn btn-light my-3" to="/">Go Back</Link>

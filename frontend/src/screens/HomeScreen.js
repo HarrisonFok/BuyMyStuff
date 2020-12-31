@@ -14,9 +14,9 @@ const HomeScreen = () => {
         const fetchProducts = async () => {
             // that returns a promise, so we use await
             // can't make useEffect async, so we create a function
-            const res = await axios.get("/api/products")
+            const {data} = await axios.get("/api/products")
             // change the list of products from the empty array to the data we get back from the endpoint
-            setProducts(res.data);
+            setProducts(data);
         }
         fetchProducts()
     }, [])
