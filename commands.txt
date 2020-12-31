@@ -12,3 +12,9 @@ npm i --save react-router-dom
 
 npm i --save react-router-bootstrap
 ==> contains stuff like Row, Col, Image, ListGroup, Card, Button
+
+mkdir backend -> npm init
+
+In root,
+npm i --save express
+npm i --save axios
