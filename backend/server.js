@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import colors from "colors";
 import {notFound, errorHandler} from "./middleware/errorMiddleware.js"
 import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config()
 
@@ -12,12 +13,16 @@ connectDB()
 
 const app = express()
 
+// in order to access json data in the req.body - body parser
+app.use(express.json())
+
 app.get("/", (req, res) => {
     res.send("API running...")
 })
 
 // Mount it -> for anything that goes to this, link to productRoutes
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
 // Middlewares
 app.use(notFound)
