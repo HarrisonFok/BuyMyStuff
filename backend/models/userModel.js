@@ -30,6 +30,18 @@ userSchema.methods.matchPassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password)
 }
 
+// Can set certain things to happen on save
+userSchema.pre("save", async function (next) {
+    // only want to do the below if the password is motified
+    // otherwise, it'll create a new hash and we won't be able to log in
+    if(!this.isModified("password")) {
+      next();
+    }
+  
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  })
+
 const User = mongoose.model("User", userSchema);
 
 export default User; 
