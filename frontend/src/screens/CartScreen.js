@@ -38,8 +38,8 @@ const CartScreen = ({match, location, history}) => {
     };
     
     const checkoutHandler = () => {
-    // Redirect to login if not logged in, to shipping otherwise
-    history.push(`/login?redirect=shipping`);
+      // Redirect to login if not logged in, to shipping otherwise
+      history.push(`/login?redirect=shipping`);
     };
 
     return (
