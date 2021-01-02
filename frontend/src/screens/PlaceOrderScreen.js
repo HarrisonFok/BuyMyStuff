@@ -34,7 +34,7 @@ const PlaceOrderScreen = ({history}) => {
     // If success, that means everything went through and we're ready to be redirected
     useEffect(() => {
         if (success) {
-            history.push(`order/${order._id}`)
+            history.push(`/order/${order._id}`)
         }
         // eslint-disable-next-line
     }, [history, success])
