@@ -5,6 +5,7 @@ import {Form, Button} from "react-bootstrap"
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import { saveShippingAddress } from '../actions/cartActions';
+import CheckoutSteps from '../components/CheckoutSteps';
 
 // When we submit the form, need history to push to redirect to payment screen
 const ShippingScreen = ({history}) => {
@@ -27,6 +28,8 @@ const ShippingScreen = ({history}) => {
 
     return (
         <FormContainer>
+            {/* The shipping screen is just the second step */}
+            <CheckoutSteps step1 step2 />
             <h1>Shipping</h1>
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId="address">
