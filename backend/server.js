@@ -26,6 +26,9 @@ app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes)
 
+// When we're ready to make payment, hit this route and fetch the client id
+app.get("/api/config/paypal", (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
+
 // Middlewares
 app.use(notFound)
 app.use(errorHandler)

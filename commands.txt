@@ -35,3 +35,6 @@ Pattern - constants, reducer, action, fire off in component
 
 backend:
 npm i --save jsonwebtoken
+
+frontend: 
+npm i --save react-paypal-button-v2 
