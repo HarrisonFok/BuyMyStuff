@@ -29,26 +29,22 @@ const UserEditScreen = ({match, history}) => {
     const {loading: loadingUpdate, error: errorUpdate, success: successUpdate} = userUpdate;
 
     useEffect(() => {
-        // if(successUpdate) {
-        //     dispatch({type: USER_UPDATE_RESET})
-        //     history.push("/admin/userList")
-        // } else {
-
-        // if doesn't exist, then fetch user
-        if (!user) {
-            // if (!user.name || user._id !== userId)
-            dispatch(getUserDetails(userId))
+        // want to reset the user update state and redirect to user list
+        if(successUpdate) {
+            dispatch({type: USER_UPDATE_RESET})
+            history.push("/admin/userList")
         } else {
-            setName(user.name)
-            setEmail(user.email)
-            setIsAdmin(user.isAdmin)
+            // if doesn't exist, then fetch user
+            if (!user) {
+                // if (!user.name || user._id !== userId)
+                dispatch(getUserDetails(userId))
+            } else {
+                setName(user.name)
+                setEmail(user.email)
+                setIsAdmin(user.isAdmin)
+            }
         }
-        // }
     }, [dispatch, userId, user, successUpdate, history])
-    /*
-    useEffect(() => {
-    }, [user])
-    */
 
     const submitHandler = (e) => {
         e.preventDefault()
