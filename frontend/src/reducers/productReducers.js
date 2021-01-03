@@ -1,6 +1,6 @@
 // This will handle the state for the product list on the home page
 
-import { PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_FAIL } from "../constants/productConstants"
+import { PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_FAIL, PRODUCT_DELETE_SUCCESS, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_FAIL } from "../constants/productConstants"
 
 export const productListReducer = (state={ products: [] }, action) => {
     // 3 types: request, success, failure
@@ -29,3 +29,18 @@ export const productDetailsReducer = (state={ product: { reviews: []} }, action)
             return state
     }
 }
+
+export const productDeleteReducer = (state = {  }, action) => {
+    // 3 types: request, success, failure
+    switch (action.type) {
+      case PRODUCT_DELETE_REQUEST:
+        return { loading: true, ...state };
+      case PRODUCT_DELETE_SUCCESS:
+        // because we didn't send anything back from server
+        return { loading: false, success: true };
+      case PRODUCT_DELETE_FAIL:
+        return { loading: false, error: action.payload };
+      default:
+        return state;
+    }
+};

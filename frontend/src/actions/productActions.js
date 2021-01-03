@@ -1,4 +1,4 @@
-import { PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_FAIL } from "../constants/productConstants"
+import { PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_DETAILS_REQUEST, PRODUCT_DETAILS_SUCCESS, PRODUCT_DETAILS_FAIL,   PRODUCT_DELETE_SUCCESS, PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_FAIL } from "../constants/productConstants"
 import axios from "axios";
 // want to make an async request - redux-thunk allows you to add a function within a function
 
@@ -33,3 +33,36 @@ export const listProductDetails = (id) => async(dispatch) => {
         dispatch({type: PRODUCT_DETAILS_FAIL, payload: error.response && error.response.data.message ? error.response.data.message : error.message})
     }
 } 
+
+export const deleteProduct = (id) => async(dispatch, getState) => {
+    // console.log("payOrder action: ", orderId)
+    try {
+        dispatch({
+            type: PRODUCT_DELETE_REQUEST
+        })
+  
+        const {userLogin: {userInfo}} = getState()
+  
+        // Send in header
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+  
+        // user is the data we want to update with
+        await axios.delete(`/api/products/${id}`, config)
+  
+        dispatch({
+            type: PRODUCT_DELETE_SUCCESS
+        })
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_DELETE_FAIL,
+            payload:
+              error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+        });
+    }
+  } 
