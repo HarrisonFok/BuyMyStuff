@@ -60,4 +60,14 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     }
 });
 
-export {addOrderItems, getOrderById, updateOrderToPaid} 
+// @desc Get logged in user orders
+// @route GET /api/orders/myorders
+// @access Private
+const getMyOrders = asyncHandler(async (req, res) => {
+    // also want to get the name and email associated with the user with this id
+    // - populate from user and put in space-separated fields (will be attached to this findById)
+    const orders = await Order.find({user: req.user._id})
+    res.json(orders)
+});
+
+export {addOrderItems, getOrderById, updateOrderToPaid, getMyOrders} 
