@@ -8,8 +8,13 @@ import {Row, Col} from "react-bootstrap"
 import Product from "../components/Product";
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import Paginate from "../components/Paginate";
 
-const HomeScreen = () => {
+const HomeScreen = ({match}) => {
+    // Called keyword because we set that in App.js (/:keyword)
+    const keyword = match.params.keyword;
+    const pageNumber = match.params.pageNumber || 1;
+
     // const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
 
@@ -17,13 +22,14 @@ const HomeScreen = () => {
     // - executed whenever the page is loaded
     // - however, it's complaining because it's looking at localhost:3000 (need to add proxy)
     useEffect(() => {
-        dispatch(listProducts())
-    }, [dispatch])
+        dispatch(listProducts(keyword, pageNumber))
+    // keyword has to be added so that when the user types in something different (i.e. keyword changes), the component will re-render
+    }, [dispatch, keyword, pageNumber])
 
     // use same name as we did in store.js - want to get that piece of state
     const productList = useSelector(state => state.productList);
     // all the possible states (seen in reducer)
-    const {loading, error, products} = productList
+    const {loading, error, products, page, pages} = productList
 
     // dependencies (array): when you want this to fire off some side-effects if they change
     return (
@@ -32,14 +38,17 @@ const HomeScreen = () => {
             {/* if error then output error */}
             {loading ? <Loader /> : error ? <Message variant="danger">{error}</Message> : 
                     (
-                        <Row>
-                            {products.map(product => (
-                                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                                    {/* <h3>{product.name}</h3> */}
-                                    <Product product={product}/>
-                                </Col>
-                            ))}
-                        </Row>
+                        <>
+                            <Row>
+                                {products.map(product => (
+                                    <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                                        {/* <h3>{product.name}</h3> */}
+                                        <Product product={product}/>
+                                    </Col>
+                                ))}
+                            </Row>
+                            <Paginate pages={pages} page={page} keyword={keyword ? keyword : ""}/>
+                        </>
                     )
             }
         </>

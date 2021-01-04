@@ -2,11 +2,12 @@ import { PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_
 import axios from "axios";
 // want to make an async request - redux-thunk allows you to add a function within a function
 
-export const listProducts = () => async(dispatch) => {
+export const listProducts = (keyword="", pageNumber="") => async(dispatch) => {
     try {
         // Getting ready to send the request
         dispatch({type: PRODUCT_LIST_REQUEST});
-        const {data} = await axios.get("/api/products")
+        // two or more query strings -> you'll have a &
+        const {data} = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`)
         // in productReducer, when it's success, the payload will be matched to the "products" key
         dispatch({
             type: PRODUCT_LIST_SUCCESS, 

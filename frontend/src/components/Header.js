@@ -1,10 +1,12 @@
 import React from 'react'
+import {Route} from "react-router-dom";
 // fire an action - useDispatch; bring something in from redux - useSelector
 import {useDispatch, useSelector} from "react-redux"
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 // wrap bootstrap components
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../actions/userActions";
+import SearchBox from "./SearchBox";
 
 const Header = () => {
     const dispatch = useDispatch()
@@ -27,6 +29,10 @@ const Header = () => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
+                            {/* If we just put this here and we search, history will be undefined (no access to match in the header) */}
+                                {/* <SearchBox /> */}
+                            {/* We have access to props.history here, so we include this Route to pass in history to the SearchBox */}
+                            <Route render={({history}) => <SearchBox history={history}/>}/>
                             <LinkContainer to="/cart">
                                 <Nav.Link><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
                             </LinkContainer>
