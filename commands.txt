@@ -41,4 +41,3 @@ npm i --save react-paypal-button-v2
 
 backend:
 npm i --save multer
-npm i --save morgan
