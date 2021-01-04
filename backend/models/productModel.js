@@ -13,6 +13,12 @@ const reviewSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    // associate user to a review so we know the user has made one
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User",
+    },
 }, {
     timestamps: true
 })
