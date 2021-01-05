@@ -1,5 +1,6 @@
 // useState = states in functional components
 import React, {useEffect} from 'react'
+import {Helmet} from "react-helmet"
 // useDispatch - to call (dispatch) an action
 // useSelector - select part of the state
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +10,9 @@ import Product from "../components/Product";
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from "../components/Paginate";
+import ProductCarousel from '../components/ProductCarousel';
+import Meta from '../components/Meta';
+import { Link } from 'react-router-dom';
 
 const HomeScreen = ({match}) => {
     // Called keyword because we set that in App.js (/:keyword)
@@ -31,9 +35,11 @@ const HomeScreen = ({match}) => {
     // all the possible states (seen in reducer)
     const {loading, error, products, page, pages} = productList
 
-    // dependencies (array): when you want this to fire off some side-effects if they change
+    // depedencies (array): when you want this to fire off some side-effects if they change
     return (
         <>
+            <Meta />
+            {!keyword ? <ProductCarousel /> : <Link to="/" className="btn btn-light">Go Back</Link>}
             <h1>My Products</h1>
             {/* if error then output error */}
             {loading ? <Loader /> : error ? <Message variant="danger">{error}</Message> : 
