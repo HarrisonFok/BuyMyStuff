@@ -47,7 +47,7 @@ const Header = () => {
                             <LinkContainer to="/cart">
                                 <Nav.Link><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
                             </LinkContainer>
-                            {userInfo && userInfo !== [] ? 
+                            {userInfo && Object.entries(userInfo).length !== 0 ? 
                                 (
                                     // allow the user to have a dropdown to either profile or logout
                                     <NavDropdown title={userInfo.name} id="username">
