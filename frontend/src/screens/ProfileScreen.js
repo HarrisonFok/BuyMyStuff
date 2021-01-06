@@ -28,6 +28,8 @@ const ProfileScreen = ({location, history}) => {
     // look at user reducer to know what is stored inside the state
     const {userInfo} = userLogin;
 
+    console.log("userInfo: ", userInfo)
+
     // Check to see if the user profile is updated
     const userUpdateProfile = useSelector(state => state.userUpdateProfile);
     // look at user reducer to know what is stored inside the state
@@ -42,7 +44,7 @@ const ProfileScreen = ({location, history}) => {
         if (!userInfo) {
             history.push("/login")
         } else {
-            if (!user.name) {
+            if (!user) {
                 // so that in the action, "profile" gets passed in and it'll reach /api/users/profile (and not a user id)
                 dispatch(getUserDetails("profile"))
                 // want it to display the list of my orders once the screen loads

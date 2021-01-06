@@ -26,7 +26,7 @@ const LoginScreen = ({location, history}) => {
     // Redirect if logged in
     useEffect(() => {
         // i.e. logged in
-        if (userInfo) {
+        if (userInfo && Object.entries(userInfo).length !== 0) {
             history.push(redirect)
         }
     }, [history, userInfo, redirect])

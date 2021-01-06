@@ -19,7 +19,6 @@ const Header = () => {
 
     useEffect(() => {
         if (!userInfo) {
-            // REDIRECT TO HOME SCREEN
             history.push("/login")
         }
     })
@@ -48,7 +47,7 @@ const Header = () => {
                             <LinkContainer to="/cart">
                                 <Nav.Link><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
                             </LinkContainer>
-                            {userInfo && userInfo !== {} ? 
+                            {userInfo && userInfo !== [] ? 
                                 (
                                     // allow the user to have a dropdown to either profile or logout
                                     <NavDropdown title={userInfo.name} id="username">

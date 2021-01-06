@@ -22,6 +22,11 @@ const HomeScreen = ({match}) => {
     // const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
 
+    // use same name as we did in store.js - want to get that piece of state
+    const productList = useSelector(state => state.productList);
+    // all the possible states (seen in reducer)
+    const {loading, error, products, page, pages} = productList
+
     // useEffect to make a request to the backend
     // - executed whenever the page is loaded
     // - however, it's complaining because it's looking at localhost:3000 (need to add proxy)
@@ -29,11 +34,6 @@ const HomeScreen = ({match}) => {
         dispatch(listProducts(keyword, pageNumber))
     // keyword has to be added so that when the user types in something different (i.e. keyword changes), the component will re-render
     }, [dispatch, keyword, pageNumber])
-
-    // use same name as we did in store.js - want to get that piece of state
-    const productList = useSelector(state => state.productList);
-    // all the possible states (seen in reducer)
-    const {loading, error, products, page, pages} = productList
 
     // depedencies (array): when you want this to fire off some side-effects if they change
     return (
