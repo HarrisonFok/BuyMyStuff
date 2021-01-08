@@ -94,8 +94,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
     if (user) {
         user.name = req.body.name || user.name;
-        console.log("user.name: ", user.name);
-        console.log("req.body: ", req.body);
+        // console.log("user.name: ", user.name);
+        // console.log("req.body: ", req.body);
         user.email = req.body.email || user.email;
         if (req.body.password) {
             user.password = req.body.password;
@@ -176,4 +176,32 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 });
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser} 
+// @desc Add a user question
+// @route POST /api/users/:id/addQuestion
+// @access Private
+const addQuestion = asyncHandler(async (req, res) => {
+    const { question } = req.body;
+
+    const user = await User.findById(req.user._id)
+    // console.log(req.user._id)
+
+    if (user) {
+        const newQuestion = {
+            name: req.user.name,
+            question: question,
+            user: req.user._id
+        }
+
+        // Add the question to the questions list of the user
+        user.questions.push(newQuestion)
+
+        // Save the user (with an additional question) to the database
+        await user.save()
+        res.status(201).json({message: "Question added"})
+    } else {
+        res.status(404)
+        throw new Error("User not found")
+    }
+});
+
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion} 

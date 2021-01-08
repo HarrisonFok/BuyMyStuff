@@ -51,10 +51,13 @@ const Header = () => {
                                 (
                                     // allow the user to have a dropdown to either profile or logout
                                     <NavDropdown title={userInfo.name} id="username">
-                                    <LinkContainer to="/profile">
-                                        <NavDropdown.Item>Profile</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                                        <LinkContainer to="/profile">
+                                            <NavDropdown.Item>Profile</NavDropdown.Item>
+                                        </LinkContainer>
+                                        <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                                        <LinkContainer to="/questions">
+                                            <NavDropdown.Item>Ask Questions</NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
                                 ) :
                                 (

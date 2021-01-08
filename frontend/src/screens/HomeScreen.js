@@ -1,6 +1,5 @@
 // useState = states in functional components
 import React, {useEffect} from 'react'
-import {Helmet} from "react-helmet"
 // useDispatch - to call (dispatch) an action
 // useSelector - select part of the state
 import { useDispatch, useSelector } from "react-redux";

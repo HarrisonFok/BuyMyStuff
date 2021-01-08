@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import {listProducts, deleteProduct, createProduct} from "../actions/productActions";
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
+// import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
 import Paginate from '../components/Paginate';
 
 const ProductListScreen = ({history, match}) => {

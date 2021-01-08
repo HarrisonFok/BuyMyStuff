@@ -1,6 +1,24 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
+const questionSchema = mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "User"
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    question: {
+        type: String,
+        required: true
+    }
+}, {
+    timestamps: true
+})
+
 const userSchema = mongoose.Schema({
     name: {
         type: String, 
@@ -15,6 +33,7 @@ const userSchema = mongoose.Schema({
         type: String, 
         required: true
     }, 
+    questions: [questionSchema],
     isAdmin: {
         type: Boolean, 
         required: true,
