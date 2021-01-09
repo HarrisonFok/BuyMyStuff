@@ -4,8 +4,8 @@ import {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, del
 import { isAdmin, protect } from "../middleware/authMiddleware.js";
 
 router.route("/").post(registerUser).get(protect, isAdmin, getUsers)
-router.route("/:id/questions").post(addQuestion).get(getQuestions)
 router.route("/:id/questions/:qId").get(protect, getSingleQuestion)
+router.route("/:id/questions").post(addQuestion).get(getQuestions)
 router.post("/login", authUser)
 // middleware as the first argument
 router.route("/profile").get(protect, getUserProfile).put(protect, updateUserProfile)

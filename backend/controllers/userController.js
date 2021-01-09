@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
+import Question from '../models/questionModel.js';
 import generateToken from "../utils/generateToken.js"
 
 // jwt.io
@@ -182,21 +183,23 @@ const updateUser = asyncHandler(async (req, res) => {
 const addQuestion = asyncHandler(async (req, res) => {
     const { question } = req.body;
 
-    const user = await User.findById(req.user._id)
-    // console.log(req.user._id)
+    const user = await User.findById(req.params.id)
+    // console.log(req.params.id)
 
     if (user) {
         const newQuestion = {
-            name: req.user.name,
+            name: user.name,
             question: question,
-            user: req.user._id
+            user: req.params.id
         }
 
-        // Add the question to the questions list of the user
-        user.questions.push(newQuestion)
+        // Add the question to the questions table
+        await Question.create(newQuestion)
+
+        // user.questions.push(newQuestion)
 
         // Save the user (with an additional question) to the database
-        await user.save()
+        // await user.save()
         res.status(201).json({message: "Question added"})
     } else {
         res.status(404)
@@ -209,11 +212,12 @@ const addQuestion = asyncHandler(async (req, res) => {
 // @access Private
 const getQuestions = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
-    // console.log(req.user._id)
+    // console.log(user)
     // console.log("Got here")
 
     if (user) {
-        const questions = user.questions
+        // Find all documents where the user field is equal to the user ID passed into the URL
+        const questions = await Question.find({user: req.params.id}).exec()
         res.json(questions)
     } else {
         res.status(404)
@@ -226,11 +230,10 @@ const getQuestions = asyncHandler(async (req, res) => {
 // @access Private
 const getSingleQuestion = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
-    // console.log(req.params.id)
+    console.log(req.params.id)
 
     if (user) {
-        const questions = user.questions
-        const question = questions.filter(q =>  {return JSON.stringify(q._id) === JSON.stringify(req.params.qId)})
+        const question = await Question.findOne({_id: req.params.qId}).exec()
         res.json(question)
     } else {
         res.status(404)

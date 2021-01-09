@@ -2,9 +2,11 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import users from "./data/users.js";
 import products from "./data/products.js";
+import questions from "./data/questions.js"
 import User from './models/userModel.js';
 import Product from './models/productModel.js';
 import Order from './models/orderModel.js';
+import Question from "./models/questionModel.js"
 import connectDB from './config/db.js';
 
 dotenv.config();
@@ -18,6 +20,7 @@ const importData = async () => {
         await Order.deleteMany();
         await Product.deleteMany();
         await User.deleteMany();
+        await Question.deleteMany();
 
         const createdUsers = await User.insertMany(users);
         // connection betwen products and users
@@ -29,6 +32,13 @@ const importData = async () => {
         });
 
         await Product.insertMany(sampleProducts);
+
+        // Adding sample questions to Jane
+        const sampleQuestions = questions.map(q => {
+            return {...q, user: createdUsers[2]}
+        })
+
+        await Question.insertMany(sampleQuestions)
 
         console.log("Data imported".green.inverse);
         process.exit()
