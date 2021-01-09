@@ -208,8 +208,9 @@ const addQuestion = asyncHandler(async (req, res) => {
 // @route GET /api/users/:id/questions
 // @access Private
 const getQuestions = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id)
+    const user = await User.findById(req.params.id)
     // console.log(req.user._id)
+    // console.log("Got here")
 
     if (user) {
         const questions = user.questions
@@ -224,7 +225,7 @@ const getQuestions = asyncHandler(async (req, res) => {
 // @route GET /api/users/:id/questions/:id
 // @access Private
 const getSingleQuestion = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id)
+    const user = await User.findById(req.params.id)
     // console.log(req.params.id)
 
     if (user) {
