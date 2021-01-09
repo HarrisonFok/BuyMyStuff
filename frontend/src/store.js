@@ -9,6 +9,7 @@ import { productListReducer, productDetailsReducer, productDeleteReducer, produc
 import { cartReducer } from "./reducers/cartReducers"
 import { userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer, userListReducer, userDeleteReducer, userUpdateReducer } from './reducers/userReducers';
 import { orderCreateReducer, orderDetailsReducer, orderPayReducer, orderDeliverReducer, orderListMyReducer, orderListReducer } from './reducers/orderReducers';
+import { questionsReducer } from './reducers/questionReducers';
 
 // will have multiple reducers handling a certain piece of functionalities (eg. reducer for product)
 
@@ -29,6 +30,7 @@ const reducer = combineReducers({
     userList: userListReducer,
     userUpdate: userUpdateReducer,
     userDelete: userDeleteReducer,
+    questionsList: questionsReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
