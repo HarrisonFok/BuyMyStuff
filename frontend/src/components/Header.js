@@ -23,6 +23,10 @@ const Header = () => {
         }
     })
 
+    const askQuestionHandler = () => {
+        history.push(`/user/${userInfo._id}/questions`)
+    }
+
     const logoutHandler = () => {
         // console.log("logout")
         dispatch(logout())
@@ -55,9 +59,7 @@ const Header = () => {
                                             <NavDropdown.Item>Profile</NavDropdown.Item>
                                         </LinkContainer>
                                         <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
-                                        <LinkContainer to="/questions">
-                                            <NavDropdown.Item>Ask Questions</NavDropdown.Item>
-                                        </LinkContainer>
+                                        <NavDropdown.Item onClick={askQuestionHandler}>Ask a Question</NavDropdown.Item>
                                     </NavDropdown>
                                 ) :
                                 (

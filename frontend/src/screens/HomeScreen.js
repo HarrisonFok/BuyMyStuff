@@ -4,7 +4,7 @@ import React, {useEffect} from 'react'
 // useSelector - select part of the state
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from '../actions/productActions';
-import {Row, Col} from "react-bootstrap"
+import {Row, Col, Button} from "react-bootstrap"
 import Product from "../components/Product";
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -13,7 +13,7 @@ import ProductCarousel from '../components/ProductCarousel';
 import Meta from '../components/Meta';
 import { Link } from 'react-router-dom';
 
-const HomeScreen = ({match}) => {
+const HomeScreen = ({match, history}) => {
     // Called keyword because we set that in App.js (/:keyword)
     const keyword = match.params.keyword;
     const pageNumber = match.params.pageNumber || 1;
@@ -25,6 +25,9 @@ const HomeScreen = ({match}) => {
     const productList = useSelector(state => state.productList);
     // all the possible states (seen in reducer)
     const {loading, error, products, page, pages} = productList
+
+    const userLogin = useSelector(state => state.userLogin)
+    const {userInfo} = userLogin
 
     // useEffect to make a request to the backend
     // - executed whenever the page is loaded

@@ -35,8 +35,8 @@ const App = () => {
             <Route path="/login" component={LoginScreen} />
             <Route path="/register" component={RegisterScreen} />
             <Route path="/profile" component={ProfileScreen} />
-            <Route path="/questions" component={QuestionScreen} />
             <Route path="/product/:id" component={ProductScreen} />
+            <Route path="/user/:id/questions" component={QuestionScreen} />
             {/* optional */}
             <Route path="/cart/:id?" component={CartScreen} />
             <Route path="/admin/userList" component={UserListScreen} />
