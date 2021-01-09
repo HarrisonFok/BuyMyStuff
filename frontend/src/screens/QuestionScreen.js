@@ -43,8 +43,8 @@ const QuestionScreen = ({match}) => {
             </Form>
 
             <div className="my-3">
-                {userQuestions.map((p, i) => (
-                <Row key={i}>
+                {userQuestions.map((p) => (
+                <Row key={p._id}>
                     <Card>
                         <ListGroup>
                             <ListGroup.Item>

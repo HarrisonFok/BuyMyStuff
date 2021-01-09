@@ -177,7 +177,7 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 // @desc Add a user question
-// @route POST /api/users/:id/addQuestion
+// @route POST /api/users/:id/questions
 // @access Private
 const addQuestion = asyncHandler(async (req, res) => {
     const { question } = req.body;
@@ -204,4 +204,37 @@ const addQuestion = asyncHandler(async (req, res) => {
     }
 });
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion} 
+// @desc Get a user's questions
+// @route GET /api/users/:id/questions
+// @access Private
+const getQuestions = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id)
+    // console.log(req.user._id)
+
+    if (user) {
+        const questions = user.questions
+        res.json(questions)
+    } else {
+        res.status(404)
+        throw new Error("User not found")
+    }
+});
+
+// @desc Get a specific user question
+// @route GET /api/users/:id/questions/:id
+// @access Private
+const getSingleQuestion = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id)
+    // console.log(req.params.id)
+
+    if (user) {
+        const questions = user.questions
+        const question = questions.filter(q =>  {return JSON.stringify(q._id) === JSON.stringify(req.params.qId)})
+        res.json(question)
+    } else {
+        res.status(404)
+        throw new Error("User not found")
+    }
+});
+
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion} 
