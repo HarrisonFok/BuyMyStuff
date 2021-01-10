@@ -230,7 +230,7 @@ const getQuestions = asyncHandler(async (req, res) => {
 // @access Private
 const getSingleQuestion = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
-    console.log(req.params.id)
+    // console.log(req.params.id)
 
     if (user) {
         const question = await Question.findOne({_id: req.params.qId}).exec()

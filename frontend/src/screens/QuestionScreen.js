@@ -3,16 +3,17 @@ import { Link } from 'react-router-dom'
 import Meta from '../components/Meta';
 import { Row, Col, Form, Card, ListGroup } from "react-bootstrap";
 import { MDBInput, MDBIcon, MDBBtn } from "mdbreact";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // import {createQuestion} from "../actions/userActions"
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { USER_ADD_QUESTION_RESET } from '../constants/userConstants';
-import {listQuestions} from "../actions/questionActions";
+import {listQuestions, addQuestion} from "../actions/questionActions";
 
 const QuestionScreen = ({match}) => {
-    // const [questions, setQuestions] = useState([])
+    const [question, setQuestion] = useState("")
+    const [done, setDone] = useState(false)
+
     const dispatch = useDispatch()
 
     const questionsList = useSelector(state => state.questionsList)
@@ -20,14 +21,18 @@ const QuestionScreen = ({match}) => {
 
     // Make a request to backend and add products as component-level states
     useEffect(() => {
+        setDone(false)
         // Dispatch this so that the redux state will be filled
         dispatch(listQuestions(match.params.id))
-    }, [dispatch])
+    }, [dispatch, done])
 
     const submitHandler = (e) => {
         e.preventDefault()
-        // dispatch(createQuestion(match.params.id, {question}))
-        console.log("Question")
+        const questionObj = {
+            question: question
+        }
+        dispatch(addQuestion(match.params.id, questionObj))
+        setDone(true)
     }
 
     return (
@@ -39,7 +44,7 @@ const QuestionScreen = ({match}) => {
             <Form onSubmit={submitHandler}>
                 <Row>
                     <Col md={10}>
-                        <MDBInput/>
+                        <MDBInput id="typedQuestion" onChange={(e) => setQuestion(e.target.value)}/>
                     </Col>
                     <Col md={2}>
                         <MDBBtn size="lg" type="submit">
