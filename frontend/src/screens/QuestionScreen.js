@@ -1,33 +1,28 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Meta from '../components/Meta';
-import { Row, Col, Button, Form, Card, ListGroup } from "react-bootstrap";
+import { Row, Col, Form, Card, ListGroup } from "react-bootstrap";
 import { MDBInput, MDBIcon, MDBBtn } from "mdbreact";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // import {createQuestion} from "../actions/userActions"
 import Message from '../components/Message';
+import Loader from '../components/Loader';
 import { USER_ADD_QUESTION_RESET } from '../constants/userConstants';
-import axios from "axios"
+import {listQuestions} from "../actions/questionActions";
 
 const QuestionScreen = ({match}) => {
-    const [questions, setQuestions] = useState([])
+    // const [questions, setQuestions] = useState([])
+    const dispatch = useDispatch()
 
-    const userLogin = useSelector(state => state.userLogin)
-    const {userInfo} = userLogin
-
-    // const userQuestions = questions.filter(p => p.userId === userInfo._id)
-    // console.log(userQuestions)
+    const questionsList = useSelector(state => state.questionsList)
+    const { loading, error, questions } = questionsList
 
     // Make a request to backend and add products as component-level states
     useEffect(() => {
-        const fetchQuestions = async() => {
-            const res = await axios.get(`/api/users/${match.params.id}/questions`)
-            console.log(res.data)
-            setQuestions(res.data)
-        }
-        fetchQuestions()
-    }, [])
+        // Dispatch this so that the redux state will be filled
+        dispatch(listQuestions(match.params.id))
+    }, [dispatch])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -54,19 +49,21 @@ const QuestionScreen = ({match}) => {
                 </Row>
             </Form>
 
-            <div className="my-3">
-                {questions.map((p) => (
-                <Row key={p._id}>
-                    <Card>
-                        <ListGroup>
-                            <ListGroup.Item>
-                                {p.question}
-                            </ListGroup.Item>
-                        </ListGroup>
-                    </Card>
-                </Row>
-                ))}
-            </div>
+            {loading ? <Loader /> : error ? <Message variant="danger">{error}</Message> : (
+                <div className="my-3">
+                    {questions.map((p) => (
+                    <Row key={p._id}>
+                        <Card>
+                            <ListGroup>
+                                <ListGroup.Item>
+                                    {p.question}
+                                </ListGroup.Item>
+                            </ListGroup>
+                        </Card>
+                    </Row>
+                    ))}
+                </div>
+            )}
         </>
     )
 }
