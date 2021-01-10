@@ -1,10 +1,11 @@
 import express from "express";
 const router = express.Router();
-import {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion} from "../controllers/userController.js";
+import {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, deleteQuestion} from "../controllers/userController.js";
 import { isAdmin, protect } from "../middleware/authMiddleware.js";
 
 router.route("/").post(registerUser).get(protect, isAdmin, getUsers)
-router.route("/:id/questions/:qId").get(protect, getSingleQuestion)
+// router.route("/:id/questions/:qId").get(protect, getSingleQuestion)
+router.route("/:id/questions/:qId").delete(deleteQuestion)
 router.route("/:id/questions").post(addQuestion).get(getQuestions)
 router.post("/login", authUser)
 // middleware as the first argument

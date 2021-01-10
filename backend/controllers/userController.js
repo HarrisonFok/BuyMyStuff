@@ -207,6 +207,27 @@ const addQuestion = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc Add a user question
+// @route POST /api/users/:id/questions/:qId
+// @access Private
+const deleteQuestion = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+
+    if (user) {
+        // Delete the question with the given id
+        await Question.findByIdAndDelete(req.params.qId)
+
+        // user.questions.push(newQuestion)
+
+        // Save the user (with an additional question) to the database
+        // await user.save()
+        res.status(201).json({message: "Question deleted"})
+    } else {
+        res.status(404)
+        throw new Error("User not found")
+    }
+});
+
 // @desc Get a user's questions
 // @route GET /api/users/:id/questions
 // @access Private
@@ -241,4 +262,4 @@ const getSingleQuestion = asyncHandler(async (req, res) => {
     }
 });
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion} 
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, deleteQuestion} 

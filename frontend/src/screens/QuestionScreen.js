@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Meta from '../components/Meta';
-import { Row, Col, Form, Card, ListGroup } from "react-bootstrap";
+import { Row, Col, Form, Card, ListGroup, Button } from "react-bootstrap";
 import { MDBInput, MDBIcon, MDBBtn } from "mdbreact";
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // import {createQuestion} from "../actions/userActions"
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import {listQuestions, addQuestion} from "../actions/questionActions";
+import {listQuestions, addQuestion, deleteQuestion} from "../actions/questionActions";
 
 const QuestionScreen = ({match}) => {
     const [question, setQuestion] = useState("")
@@ -35,6 +35,11 @@ const QuestionScreen = ({match}) => {
         setDone(true)
     }
 
+    const deleteHandler = (userId, qId) => {
+        dispatch(deleteQuestion(userId, qId))
+        setDone(true)
+    }
+
     return (
         <>
             <Meta title="Ask questions" />
@@ -57,15 +62,18 @@ const QuestionScreen = ({match}) => {
             {loading ? <Loader /> : error ? <Message variant="danger">{error}</Message> : (
                 <div className="my-3">
                     {questions.map((p) => (
-                    <Row key={p._id}>
-                        <Card>
-                            <ListGroup>
-                                <ListGroup.Item>
-                                    {p.question}
-                                </ListGroup.Item>
-                            </ListGroup>
-                        </Card>
-                    </Row>
+                        <Row key={p._id}>
+                            <Card>
+                                <ListGroup>
+                                    <ListGroup.Item>
+                                        {p.question}
+                                    </ListGroup.Item>
+                                </ListGroup>
+                            </Card>
+                            <MDBBtn onClick={(e) => deleteHandler(match.params.id, p._id)}>
+                                <i className="fa fa-trash" aria-hidden="true"></i>
+                            </MDBBtn>
+                        </Row>
                     ))}
                 </div>
             )}
