@@ -16,12 +16,16 @@ const QuestionScreen = ({match}) => {
 
     const dispatch = useDispatch()
 
+    const typedQuestion = React.useRef()
+
     const questionsList = useSelector(state => state.questionsList)
     const { loading, error, questions } = questionsList
 
     // Make a request to backend and add products as component-level states
     useEffect(() => {
         setDone(false)
+        // Reset the MDBInput to be empty
+        typedQuestion.current.state.innerValue = ""
         // Dispatch this so that the redux state will be filled
         dispatch(listQuestions(match.params.id))
     }, [dispatch, done])
@@ -49,7 +53,7 @@ const QuestionScreen = ({match}) => {
             <Form onSubmit={submitHandler}>
                 <Row>
                     <Col md={10}>
-                        <MDBInput id="typedQuestion" onChange={(e) => setQuestion(e.target.value)}/>
+                        <MDBInput ref={typedQuestion} onChange={(e) => setQuestion(e.target.value)}/>
                     </Col>
                     <Col md={2}>
                         <MDBBtn size="lg" type="submit">
