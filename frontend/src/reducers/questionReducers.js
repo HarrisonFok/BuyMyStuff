@@ -1,4 +1,4 @@
-import { QUESTIONS_LIST_REQUEST, QUESTIONS_LIST_SUCCESS, QUESTIONS_LIST_FAIL, QUESTIONS_ADD_REQUEST, QUESTIONS_ADD_SUCCESS, QUESTIONS_ADD_FAIL, QUESTIONS_DELETE_REQUEST, QUESTIONS_DELETE_SUCCESS, QUESTIONS_DELETE_FAIL } from "../constants/questionConstants"
+import { QUESTIONS_LIST_REQUEST, QUESTIONS_LIST_SUCCESS, QUESTIONS_LIST_FAIL, QUESTIONS_ADD_REQUEST, QUESTIONS_ADD_SUCCESS, QUESTIONS_ADD_FAIL, QUESTIONS_DELETE_REQUEST, QUESTIONS_DELETE_SUCCESS, QUESTIONS_DELETE_FAIL, QUESTIONS_EDIT_REQUEST, QUESTIONS_EDIT_SUCCESS, QUESTIONS_EDIT_FAIL } from "../constants/questionConstants"
 
 export const questionsReducer = (state = { questions: [] }, action) => {
     switch(action.type) {
@@ -36,6 +36,20 @@ export const questionsDeleteReducer = (state = { questions: [] }, action) => {
         case QUESTIONS_DELETE_SUCCESS:
             return { loading: false, questions: action.payload }
         case QUESTIONS_DELETE_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state;
+    }
+}
+
+export const questionsEditReducer = (state = { questions: [] }, action) => {
+    switch(action.type) {
+        case QUESTIONS_EDIT_REQUEST:
+            // questions is an empty array because it hasn't been fulfilled yet
+            return { loading: true, questions: [] }
+        case QUESTIONS_EDIT_SUCCESS:
+            return { loading: false, questions: action.payload }
+        case QUESTIONS_EDIT_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state;

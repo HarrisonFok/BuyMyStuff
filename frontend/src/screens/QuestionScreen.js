@@ -3,20 +3,20 @@ import { Link } from 'react-router-dom'
 import Meta from '../components/Meta';
 import { Row, Col, Form, Card, ListGroup, Button } from "react-bootstrap";
 import { MDBInput, MDBIcon, MDBBtn } from "mdbreact";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // import {createQuestion} from "../actions/userActions"
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import {listQuestions, addQuestion, deleteQuestion} from "../actions/questionActions";
+import {listQuestions, addQuestion, deleteQuestion } from "../actions/questionActions";
 
-const QuestionScreen = ({match}) => {
+const QuestionScreen = ({match, history}) => {
     const [question, setQuestion] = useState("")
     const [done, setDone] = useState(false)
 
     const dispatch = useDispatch()
 
-    const typedQuestion = React.useRef()
+    const typedQuestion = useRef()
 
     const questionsList = useSelector(state => state.questionsList)
     const { loading, error, questions } = questionsList
@@ -44,6 +44,10 @@ const QuestionScreen = ({match}) => {
         setDone(true)
     }
 
+    const editHandler = (userId, q) => {
+        history.push({pathname: `/user/${userId}/questions/${q._id}`, state: {questionObj: q}})
+    }
+
     return (
         <>
             <Meta title="Ask questions" />
@@ -67,7 +71,7 @@ const QuestionScreen = ({match}) => {
                 <div className="my-3">
                     {questions.map((p) => (
                         <Row key={p._id}>
-                            <Card>
+                            <Card onClick={(e) => editHandler(match.params.id, p)}>
                                 <ListGroup>
                                     <ListGroup.Item>
                                         {p.question}

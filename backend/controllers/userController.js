@@ -207,6 +207,27 @@ const addQuestion = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc Edit a user question
+// @route PUT /api/users/:id/questions/:qId
+// @access Private
+const editQuestion = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+
+    if (user) {
+        // Delete the question with the given id
+        await Question.findByIdAndUpdate(req.params.qId, req.body, {useFindAndModify: false})
+
+        // user.questions.push(newQuestion)
+
+        // Save the user (with an additional question) to the database
+        // await user.save()
+        res.status(201).json({message: "Question edited"})
+    } else {
+        res.status(404)
+        throw new Error("User not found")
+    }
+});
+
 // @desc Add a user question
 // @route POST /api/users/:id/questions/:qId
 // @access Private
@@ -262,4 +283,4 @@ const getSingleQuestion = asyncHandler(async (req, res) => {
     }
 });
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, deleteQuestion} 
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion} 
