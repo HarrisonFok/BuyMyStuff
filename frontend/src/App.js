@@ -21,6 +21,7 @@ import OrderListScreen from './screens/OrderListScreen';
 import NotFoundScreen from "./screens/NotFoundScreen";
 import QuestionScreen from './screens/QuestionScreen';
 import QuestionEditScreen from './screens/QuestionEditScreen';
+import QuestionsListScreen from './screens/QuestionsListScreen';
 
 const App = () => {
   return (
@@ -48,6 +49,7 @@ const App = () => {
             <Route path="/admin/productList/:pageNumber" component={ProductListScreen} exact/>
             <Route path="/admin/product/:id/edit" component={ProductEditScreen} />
             <Route path="/admin/orderList" component={OrderListScreen} />
+            <Route path="/admin/questionsList" component={QuestionsListScreen} />
             <Route path="/search/:keyword" component={HomeScreen} />
             {/* If there's a keyword, then use that to search; otherwise, just use page number  */}
             <Route path="/page/:pageNumber" component={HomeScreen} exact />

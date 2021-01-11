@@ -4,7 +4,7 @@ import React, {useEffect} from 'react'
 // useSelector - select part of the state
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from '../actions/productActions';
-import {Row, Col, Button} from "react-bootstrap"
+import {Row, Col} from "react-bootstrap"
 import Product from "../components/Product";
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -25,9 +25,6 @@ const HomeScreen = ({match, history}) => {
     const productList = useSelector(state => state.productList);
     // all the possible states (seen in reducer)
     const {loading, error, products, page, pages} = productList
-
-    const userLogin = useSelector(state => state.userLogin)
-    const {userInfo} = userLogin
 
     // useEffect to make a request to the backend
     // - executed whenever the page is loaded

@@ -1,4 +1,4 @@
-import { QUESTIONS_LIST_REQUEST, QUESTIONS_LIST_SUCCESS, QUESTIONS_LIST_FAIL, QUESTIONS_ADD_REQUEST, QUESTIONS_ADD_SUCCESS, QUESTIONS_ADD_FAIL, QUESTIONS_DELETE_REQUEST, QUESTIONS_DELETE_SUCCESS, QUESTIONS_DELETE_FAIL, QUESTIONS_EDIT_REQUEST, QUESTIONS_EDIT_SUCCESS, QUESTIONS_EDIT_FAIL } from "../constants/questionConstants"
+import { QUESTIONS_LIST_REQUEST, QUESTIONS_LIST_SUCCESS, QUESTIONS_LIST_FAIL, QUESTIONS_ADD_REQUEST, QUESTIONS_ADD_SUCCESS, QUESTIONS_ADD_FAIL, QUESTIONS_DELETE_REQUEST, QUESTIONS_DELETE_SUCCESS, QUESTIONS_DELETE_FAIL, QUESTIONS_EDIT_REQUEST, QUESTIONS_EDIT_SUCCESS, QUESTIONS_EDIT_FAIL, QUESTIONS_ALL_REQUEST, QUESTIONS_ALL_SUCCESS, QUESTIONS_ALL_FAIL } from "../constants/questionConstants"
 import axios from "axios";
 
 // same as what we did for the useEffect() at first 
@@ -77,6 +77,37 @@ export const editQuestion = (userId, qId, question) => async(dispatch) => {
     } catch (error) {
         dispatch({
             type: QUESTIONS_EDIT_FAIL,
+            payload: error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+        })
+    }
+}
+
+export const getAllQuestions = () => async(dispatch, getState) => {
+    try {
+        dispatch({type: QUESTIONS_ALL_REQUEST})
+
+        const {userLogin: {userInfo}} = getState()
+  
+        // Send in header
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const res = await axios.get(`/api/users/questionsList`, config)
+
+        console.log(res.data)
+        
+        dispatch({
+            type: QUESTIONS_ALL_SUCCESS,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: QUESTIONS_ALL_FAIL,
             payload: error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message,

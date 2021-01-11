@@ -267,8 +267,17 @@ const getQuestions = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc Get a user's questions
+// @route GET /api/users/usersList
+// @access Private/Admin
+const getAllQuestions = asyncHandler(async (req, res) => {
+    // Find all documents where the user field is equal to the user ID passed into the URL
+    const questions = await Question.find({})
+    res.json(questions)
+});
+
 // @desc Get a specific user question
-// @route GET /api/users/:id/questions/:id
+// @route GET /api/users/:id/questions/:qId
 // @access Private
 const getSingleQuestion = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
@@ -283,4 +292,4 @@ const getSingleQuestion = asyncHandler(async (req, res) => {
     }
 });
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion} 
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions} 
