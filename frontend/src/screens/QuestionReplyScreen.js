@@ -19,8 +19,6 @@ const QuestionReplyScreen = ({location, history}) => {
     const questionComments = useSelector(state => state.questionComments)
     const { loading: loadingComments, comments } = questionComments
 
-    console.log(typedReply)
-
     useEffect(() => {
         // Get the question ID from the URL
         const questionId = location.pathname.split("/")[3]
@@ -50,7 +48,7 @@ const QuestionReplyScreen = ({location, history}) => {
                 <p>{location.state.question}</p>
                 <MDBInput ref={typedReply} onChange={handleChange}/>
                 <MDBBtn color="primary" onClick={replyHandler}>Reply</MDBBtn>
-                <MDBBtn color="primary" onClick={(e) => setSeeComments(!seeComments)}>Comments</MDBBtn>
+                <MDBBtn color="primary" onClick={(e) => setSeeComments(!seeComments)}>See Comments</MDBBtn>
             </div>
             <div>
                 {loadingComments && <Loader /> }

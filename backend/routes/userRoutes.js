@@ -10,7 +10,7 @@ router.route("/").post(registerUser).get(protect, isAdmin, getUsers)
 router.route("/:id/questions/:qId").delete(deleteQuestion).put(editQuestion)
 router.route("/:id/questions").post(addQuestion).get(getQuestions)
 router.route("/questionsList/:qId/comments").get(getComments)
-router.route("/questionsList/:qId").get(protect, isAdmin, getSingleQuestion).post(protect, isAdmin, replyQuestion)
+router.route("/questionsList/:qId").get(protect, isAdmin, getSingleQuestion).post(protect, replyQuestion)
 router.route("/questionsList").get(protect, isAdmin, getAllQuestions)
 router.post("/login", authUser)
 // middleware as the first argument

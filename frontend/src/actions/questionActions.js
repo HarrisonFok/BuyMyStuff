@@ -171,7 +171,7 @@ export const replyQuestion = (qId, reply) => async(dispatch, getState) => {
 }
 
 export const getAllComments = (qId) => async(dispatch, getState) => {
-    console.log(qId)
+    console.log("Got here: ", qId)
     try {
         dispatch({type: QUESTIONS_ALL_COMMENTS_REQUEST})
 
