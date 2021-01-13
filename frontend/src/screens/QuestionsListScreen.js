@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, Form, Card, ListGroup } from "react-bootstrap";
 import { LinkContainer } from 'react-router-bootstrap';
 import {Table, Button} from "react-bootstrap"
 import { getAllQuestions } from '../actions/questionActions';
@@ -17,17 +16,6 @@ const QuestionsListScreen = () => {
 
     return (
         <div>
-            {/* {questions.map(p => (
-                <Row key={p._id}>
-                    <Card>
-                        <ListGroup>
-                            <ListGroup.Item>
-                                {p.question}
-                            </ListGroup.Item>
-                        </ListGroup>
-                    </Card>
-                </Row>
-            ))} */}
             <Table striped bordered hover responsive className="table-sm">
                 <thead>
                     <tr>
@@ -40,16 +28,20 @@ const QuestionsListScreen = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {questions.map(user => (
+                    {questions.map(question => (
                         // table row
-                        <tr key={user._id}>
+                        <tr key={question._id}>
                             {/* table columns */}
-                            <td>{user.question}</td>
-                            <td>{user.user}</td>
-                            <td>{user.name}</td>
-                            <td>{user.updatedAt.substr(0,10)}</td>
                             <td>
-                                <LinkContainer to={`/admin/questionsList`}>
+                                {/* <LinkContainer to={`/user/1/questions`}> */}
+                                    {question.question}
+                                {/* </LinkContainer> */}
+                            </td>
+                            <td>{question.user}</td>
+                            <td>{question.name}</td>
+                            <td>{question.updatedAt.substr(0,10)}</td>
+                            <td>
+                                <LinkContainer to={`/admin/questionsList/${question._id}`}>
                                     <Button variant="light" className="btn-sm">
                                         <i className="fas fa-reply"></i>
                                     </Button>

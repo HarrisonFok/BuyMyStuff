@@ -1,7 +1,9 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import Question from '../models/questionModel.js';
+import Comment from '../models/commentModel.js';
 import generateToken from "../utils/generateToken.js"
+
 
 // jwt.io
 
@@ -208,10 +210,11 @@ const addQuestion = asyncHandler(async (req, res) => {
 });
 
 // @desc Edit a user question
-// @route PUT /api/users/:id/questions/:qId
+// @route PUT /api/users/questionsList/:qId
 // @access Private
 const editQuestion = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.id)
+    console.log(req.params.id)
+    const user = await Question.findById(req.params.id)
 
     if (user) {
         // Delete the question with the given id
@@ -277,19 +280,37 @@ const getAllQuestions = asyncHandler(async (req, res) => {
 });
 
 // @desc Get a specific user question
-// @route GET /api/users/:id/questions/:qId
-// @access Private
+// @route GET /api/users/questionsList/:qId
+// @access Private/Admin
 const getSingleQuestion = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.id)
+    const question = await Question.findById(req.params.id)
     // console.log(req.params.id)
-
-    if (user) {
-        const question = await Question.findOne({_id: req.params.qId}).exec()
-        res.json(question)
-    } else {
-        res.status(404)
-        throw new Error("User not found")
-    }
+    // const question = await Question.findOne({_id: req.params.qId}).exec()
+    res.json(question)
 });
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions} 
+// @desc Reply to a user's question
+// @route POST /api/users/questionsList/:qId
+// @access Private/Admin
+const replyQuestion = asyncHandler(async (req, res) => {
+    console.log(req.params.qId)
+    const question = await Question.findById(req.params.qId)
+    // console.log(req.body)
+    // console.log(req.user)
+
+    if (question) {
+        const newReply = await Comment.create({
+            name: req.user.name,
+            question: req.params.qId,
+            comment: req.body.reply
+        })
+        await Comment.create(newReply)
+        res.status(201).json({message: "Comment added"})
+    } else {
+        res.status(404)
+        throw new Error("Question not found")
+    }
+
+});
+
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions, replyQuestion} 
