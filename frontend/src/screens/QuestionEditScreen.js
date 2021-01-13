@@ -40,11 +40,12 @@ const QuestionEditScreen = ({location, history}) => {
             <MDBBtn color="primary" onClick={(e) => setSeeComments(!seeComments)}>See Comments</MDBBtn>
             <div>
                 {loadingComments && <Loader /> }
-                {comments ? comments.map((comment, i) => ( 
+                {comments && seeComments && comments.filter(comment => comment.question === questionId).map((comment, i) => ( 
                     <div key={i}>
                         <p><strong>{comment.name}:</strong> {comment.comment}</p>
                     </div>
-                )) : <h6>No comments</h6>}
+                ))}
+                {comments && seeComments && comments.length === 0 && <p>No Comments</p>}
             </div>
         </div>
     )
