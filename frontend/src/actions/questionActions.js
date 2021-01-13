@@ -1,4 +1,4 @@
-import { QUESTIONS_LIST_REQUEST, QUESTIONS_LIST_SUCCESS, QUESTIONS_LIST_FAIL, QUESTIONS_ADD_REQUEST, QUESTIONS_ADD_SUCCESS, QUESTIONS_ADD_FAIL, QUESTIONS_DELETE_REQUEST, QUESTIONS_DELETE_SUCCESS, QUESTIONS_DELETE_FAIL, QUESTIONS_EDIT_REQUEST, QUESTIONS_EDIT_SUCCESS, QUESTIONS_EDIT_FAIL, QUESTIONS_ALL_REQUEST, QUESTIONS_ALL_SUCCESS, QUESTIONS_ALL_FAIL, QUESTIONS_REPLY_REQUEST, QUESTIONS_REPLY_SUCCESS, QUESTIONS_REPLY_FAIL, QUESTIONS_SINGLE_REQUEST, QUESTIONS_SINGLE_SUCCESS, QUESTIONS_SINGLE_FAIL } from "../constants/questionConstants"
+import { QUESTIONS_LIST_REQUEST, QUESTIONS_LIST_SUCCESS, QUESTIONS_LIST_FAIL, QUESTIONS_ADD_REQUEST, QUESTIONS_ADD_SUCCESS, QUESTIONS_ADD_FAIL, QUESTIONS_DELETE_REQUEST, QUESTIONS_DELETE_SUCCESS, QUESTIONS_DELETE_FAIL, QUESTIONS_EDIT_REQUEST, QUESTIONS_EDIT_SUCCESS, QUESTIONS_EDIT_FAIL, QUESTIONS_ALL_REQUEST, QUESTIONS_ALL_SUCCESS, QUESTIONS_ALL_FAIL, QUESTIONS_REPLY_REQUEST, QUESTIONS_REPLY_SUCCESS, QUESTIONS_REPLY_FAIL, QUESTIONS_SINGLE_REQUEST, QUESTIONS_SINGLE_SUCCESS, QUESTIONS_SINGLE_FAIL, QUESTIONS_ALL_COMMENTS_REQUEST, QUESTIONS_ALL_COMMENTS_SUCCESS, QUESTIONS_ALL_COMMENTS_FAIL } from "../constants/questionConstants"
 import axios from "axios";
 
 // same as what we did for the useEffect() at first 
@@ -64,7 +64,6 @@ export const deleteQuestion = (userId, qId) => async(dispatch) => {
 
 export const editQuestion = (userId, qId, question) => async(dispatch) => {
     const body = {question: question}
-    console.log(body)
     try {
         dispatch({type: QUESTIONS_EDIT_REQUEST})
 
@@ -114,7 +113,6 @@ export const getAllQuestions = () => async(dispatch, getState) => {
 }
 
 export const getSingleQuestion = (qId) => async(dispatch, getState) => {
-    console.log(qId)
     try {
         dispatch({type: QUESTIONS_SINGLE_REQUEST})
 
@@ -144,8 +142,6 @@ export const getSingleQuestion = (qId) => async(dispatch, getState) => {
 }
 
 export const replyQuestion = (qId, reply) => async(dispatch, getState) => {
-    console.log(qId)
-    console.log(reply)
     try {
         dispatch({type: QUESTIONS_REPLY_REQUEST})
 
@@ -167,6 +163,27 @@ export const replyQuestion = (qId, reply) => async(dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: QUESTIONS_REPLY_FAIL,
+            payload: error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+        })
+    }
+}
+
+export const getAllComments = (qId) => async(dispatch, getState) => {
+    console.log(qId)
+    try {
+        dispatch({type: QUESTIONS_ALL_COMMENTS_REQUEST})
+
+        const res = await axios.get(`/api/users/questionsList/${qId}/comments`)
+        
+        dispatch({
+            type: QUESTIONS_ALL_COMMENTS_SUCCESS,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: QUESTIONS_ALL_COMMENTS_FAIL,
             payload: error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message,

@@ -34,14 +34,14 @@ const QuestionsListScreen = () => {
                             {/* table columns */}
                             <td>
                                 {/* <LinkContainer to={`/user/1/questions`}> */}
-                                    {question.question}
+                                {question.question}
                                 {/* </LinkContainer> */}
                             </td>
                             <td>{question.user}</td>
                             <td>{question.name}</td>
                             <td>{question.updatedAt.substr(0,10)}</td>
                             <td>
-                                <LinkContainer to={`/admin/questionsList/${question._id}`}>
+                                <LinkContainer to={{pathname: `/admin/questionsList/${question._id}`, state: {question: question.question}}}>
                                     <Button variant="light" className="btn-sm">
                                         <i className="fas fa-reply"></i>
                                     </Button>

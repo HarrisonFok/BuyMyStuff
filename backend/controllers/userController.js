@@ -293,7 +293,6 @@ const getSingleQuestion = asyncHandler(async (req, res) => {
 // @route POST /api/users/questionsList/:qId
 // @access Private/Admin
 const replyQuestion = asyncHandler(async (req, res) => {
-    console.log(req.params.qId)
     const question = await Question.findById(req.params.qId)
     // console.log(req.body)
     // console.log(req.user)
@@ -313,4 +312,19 @@ const replyQuestion = asyncHandler(async (req, res) => {
 
 });
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions, replyQuestion} 
+// @desc Reply to a user's question
+// @route GET /api/users/questionsList/:qId/comments
+// @access Private
+const getComments = asyncHandler(async (req, res) => {
+    const question = await Question.findById(req.params.qId)
+
+    if (question) {
+        const comments = await Comment.find({question: req.params.qId}).exec()
+        res.json(comments)
+    } else {
+        res.status(404)
+        throw new Error("Question not found")
+    }
+});
+
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions, replyQuestion, getComments} 

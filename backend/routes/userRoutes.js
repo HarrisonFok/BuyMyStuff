@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, deleteQuestion, editQuestion, getAllQuestions, replyQuestion} from "../controllers/userController.js";
+import {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, deleteQuestion, editQuestion, getAllQuestions, replyQuestion, getComments} from "../controllers/userController.js";
 import { isAdmin, protect } from "../middleware/authMiddleware.js";
 
 router.route("/").post(registerUser).get(protect, isAdmin, getUsers)
@@ -9,6 +9,7 @@ router.route("/").post(registerUser).get(protect, isAdmin, getUsers)
 // NEED TO ADD THE PROTECT BACK
 router.route("/:id/questions/:qId").delete(deleteQuestion).put(editQuestion)
 router.route("/:id/questions").post(addQuestion).get(getQuestions)
+router.route("/questionsList/:qId/comments").get(getComments)
 router.route("/questionsList/:qId").get(protect, isAdmin, getSingleQuestion).post(protect, isAdmin, replyQuestion)
 router.route("/questionsList").get(protect, isAdmin, getAllQuestions)
 router.post("/login", authUser)
