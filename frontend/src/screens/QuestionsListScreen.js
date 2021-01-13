@@ -14,6 +14,8 @@ const QuestionsListScreen = () => {
         dispatch(getAllQuestions())
     }, [dispatch])
 
+    console.log(questions)
+
     return (
         <div>
             <Table striped bordered hover responsive className="table-sm">
@@ -41,7 +43,7 @@ const QuestionsListScreen = () => {
                             <td>{question.name}</td>
                             <td>{question.updatedAt.substr(0,10)}</td>
                             <td>
-                                <LinkContainer to={{pathname: `/admin/questionsList/${question._id}`, state: {question: question.question}}}>
+                                <LinkContainer to={{pathname: `/admin/questionsList/${question._id}`, state: {question: question.question, user: question.user}}}>
                                     <Button variant="light" className="btn-sm">
                                         <i className="fas fa-reply"></i>
                                     </Button>

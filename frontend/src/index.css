@@ -56,3 +56,10 @@ h3 {
 .carousel-caption h2 {
   color: rgb(1, 0, 0);
 }
+
+.right {
+  justify-content: flex-end !important;
+}
+.left {
+  justify-content: flex-start !important;
+}

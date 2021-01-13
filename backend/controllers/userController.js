@@ -295,10 +295,11 @@ const getSingleQuestion = asyncHandler(async (req, res) => {
 const replyQuestion = asyncHandler(async (req, res) => {
     const question = await Question.findById(req.params.qId)
     // console.log(req.body)
-    // console.log(req.user)
+    console.log(req.user)
 
     if (question) {
         const newReply = await Comment.create({
+            userId: req.user._id,
             name: req.user.name,
             question: req.params.qId,
             comment: req.body.reply

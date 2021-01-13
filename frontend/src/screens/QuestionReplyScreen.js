@@ -9,6 +9,8 @@ const QuestionReplyScreen = ({location, history}) => {
     const [questionId, setQuestionId] = useState("")
     const [seeComments, setSeeComments] = useState(false)
 
+    const {user: userId} = location.state
+
     const dispatch = useDispatch()
 
     const typedReply = useRef()
@@ -52,14 +54,16 @@ const QuestionReplyScreen = ({location, history}) => {
             </div>
             <div>
                 {loadingComments && <Loader /> }
-                {comments ? comments.map((comment, i) => ( 
-                    <div key={i}>
+                {comments && seeComments && comments.map((comment, i) => ( 
+                    <div key={i}> 
                         <p><strong>{comment.name}:</strong> {comment.comment}</p>
                     </div>
-                )) : <h6>No comments</h6>}
+                ))}
             </div>
         </>
     )
 }
+
+//className={userId === comment.questionId ? "right" : "left"}>
 
 export default QuestionReplyScreen
