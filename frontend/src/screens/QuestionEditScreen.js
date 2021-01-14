@@ -10,6 +10,7 @@ const QuestionEditScreen = ({location, history}) => {
     const questionId = questionObject["_id"]
     const userId = questionObject["user"]
     const [seeComments, setSeeComments] = useState(false)
+    const [editId, setEditId] = useState("")
 
     const [formData, setFormData] = useState({
         question: "",
@@ -37,13 +38,23 @@ const QuestionEditScreen = ({location, history}) => {
         history.push(`/user/${userId}/questions/`)
     }
 
+    const updateCommentHandler = (comment, question) => {
+        console.log("comment: ", comment)
+        console.log("comment ID: ", editId)
+        console.log("comment question ID: ", question)
+        
+    }
+
     const deleteHandler = (qId, cId) => {
         dispatch(commentDelete(qId, cId))
+        history.push(`/user/${userId}/questions/`)
     }
 
     const handleChange = e => {
         setFormData({...formData, [e.target.name]: e.target.value })
     }
+
+    console.log(editId)
     
     return (
         <>
@@ -58,14 +69,15 @@ const QuestionEditScreen = ({location, history}) => {
                 {comments && seeComments && comments.map((comment, i) => ( 
                     <div key={i}>
                         <p>
-                            <strong>{comment.name}:</strong> {comment.comment}
-                            <MDBBtn>
-                                <i className="fas fa-edit"></i>
-                            </MDBBtn>
+                            <strong>{comment.name}:</strong> <div id={`IDofActualComment ${comment._id}`}>{comment.comment}</div>
                             {comment.userId === userId && (
                                 <> 
-                                    {/* onClick={deleteHandler(comment.question, comment._id)} */}
-                                    <i className="fas fa-trash-alt" onClick={(e) => deleteHandler(comment.question, comment._id)}></i>
+                                    <MDBBtn>
+                                        <i className="fas fa-edit" onClick={(e) => {setEditId(comment._id); updateCommentHandler(comment.comment, comment.question)}}></i>
+                                    </MDBBtn>
+                                    <MDBBtn>
+                                        <i className="fas fa-trash-alt" onClick={(e) => deleteHandler(comment.question, comment._id)}></i>
+                                    </MDBBtn>
                                 </>
                             )}
                         </p>
