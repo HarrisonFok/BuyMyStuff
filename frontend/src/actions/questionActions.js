@@ -1,4 +1,4 @@
-import { QUESTIONS_LIST_REQUEST, QUESTIONS_LIST_SUCCESS, QUESTIONS_LIST_FAIL, QUESTIONS_ADD_REQUEST, QUESTIONS_ADD_SUCCESS, QUESTIONS_ADD_FAIL, QUESTIONS_DELETE_REQUEST, QUESTIONS_DELETE_SUCCESS, QUESTIONS_DELETE_FAIL, QUESTIONS_EDIT_REQUEST, QUESTIONS_EDIT_SUCCESS, QUESTIONS_EDIT_FAIL, QUESTIONS_ALL_REQUEST, QUESTIONS_ALL_SUCCESS, QUESTIONS_ALL_FAIL, QUESTIONS_REPLY_REQUEST, QUESTIONS_REPLY_SUCCESS, QUESTIONS_REPLY_FAIL, QUESTIONS_SINGLE_REQUEST, QUESTIONS_SINGLE_SUCCESS, QUESTIONS_SINGLE_FAIL, QUESTIONS_ALL_COMMENTS_REQUEST, QUESTIONS_ALL_COMMENTS_SUCCESS, QUESTIONS_ALL_COMMENTS_FAIL } from "../constants/questionConstants"
+import { QUESTIONS_LIST_REQUEST, QUESTIONS_LIST_SUCCESS, QUESTIONS_LIST_FAIL, QUESTIONS_ADD_REQUEST, QUESTIONS_ADD_SUCCESS, QUESTIONS_ADD_FAIL, QUESTIONS_DELETE_REQUEST, QUESTIONS_DELETE_SUCCESS, QUESTIONS_DELETE_FAIL, QUESTIONS_EDIT_REQUEST, QUESTIONS_EDIT_SUCCESS, QUESTIONS_EDIT_FAIL, QUESTIONS_ALL_REQUEST, QUESTIONS_ALL_SUCCESS, QUESTIONS_ALL_FAIL, QUESTIONS_REPLY_REQUEST, QUESTIONS_REPLY_SUCCESS, QUESTIONS_REPLY_FAIL, QUESTIONS_SINGLE_REQUEST, QUESTIONS_SINGLE_SUCCESS, QUESTIONS_SINGLE_FAIL, QUESTIONS_ALL_COMMENTS_REQUEST, QUESTIONS_ALL_COMMENTS_SUCCESS, QUESTIONS_ALL_COMMENTS_FAIL, QUESTIONS_COMMENT_DELETE_REQUEST, QUESTIONS_COMMENT_DELETE_SUCCESS, QUESTIONS_COMMENT_DELETE_FAIL } from "../constants/questionConstants"
 import axios from "axios";
 
 // same as what we did for the useEffect() at first 
@@ -163,6 +163,35 @@ export const replyQuestion = (qId, reply) => async(dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: QUESTIONS_REPLY_FAIL,
+            payload: error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+        })
+    }
+}
+
+export const commentDelete = (qId, cId) => async(dispatch, getState) => {
+    try {
+        dispatch({type: QUESTIONS_COMMENT_DELETE_REQUEST})
+
+        const {userLogin: {userInfo}} = getState()
+  
+        // Send in header
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const res = await axios.delete(`/api/users/questionsList/${qId}/comments/${cId}`, config)
+        
+        dispatch({
+            type: QUESTIONS_COMMENT_DELETE_SUCCESS,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: QUESTIONS_COMMENT_DELETE_FAIL,
             payload: error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message,

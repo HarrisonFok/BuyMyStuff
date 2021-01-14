@@ -245,7 +245,7 @@ const deleteQuestion = asyncHandler(async (req, res) => {
 
         // Save the user (with an additional question) to the database
         // await user.save()
-        res.status(201).json({message: "Question deleted"})
+        res.status(200).json({message: "Question deleted"})
     } else {
         res.status(404)
         throw new Error("User not found")
@@ -286,12 +286,17 @@ const getSingleQuestion = asyncHandler(async (req, res) => {
     const question = await Question.findById(req.params.id)
     // console.log(req.params.id)
     // const question = await Question.findOne({_id: req.params.qId}).exec()
-    res.json(question)
+    if (question) {
+        res.json(question)
+    } else {
+        res.status(404)
+        throw new Error("Question not found")
+    }
 });
 
 // @desc Reply to a user's question
 // @route POST /api/users/questionsList/:qId
-// @access Private/Admin
+// @access Private
 const replyQuestion = asyncHandler(async (req, res) => {
     const question = await Question.findById(req.params.qId)
     // console.log(req.body)
@@ -313,7 +318,24 @@ const replyQuestion = asyncHandler(async (req, res) => {
 
 });
 
-// @desc Reply to a user's question
+// @desc Delete a user reply (comment) by the user
+// @route DELETE /api/users/questionsList/:qId/comments/:cId
+// @access Private
+const deleteComment = asyncHandler(async (req, res) => {
+    const { cId, qId } = req.params
+    const question = await Question.findById(qId)
+    const comment = await Comment.findById(cId)
+
+    if (comment && question && JSON.stringify(comment.question) === JSON.stringify(qId)) {
+        await Comment.findByIdAndDelete(cId)
+        res.status(200).json({message: "Comment deleted"})
+    } else {
+        res.status(404)
+        throw new Error("Question or comment does not exist, or comment does not belong to question")
+    }
+});
+
+// @desc Get all comments associated to a question
 // @route GET /api/users/questionsList/:qId/comments
 // @access Private
 const getComments = asyncHandler(async (req, res) => {
@@ -328,4 +350,4 @@ const getComments = asyncHandler(async (req, res) => {
     }
 });
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions, replyQuestion, getComments} 
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions, replyQuestion, deleteComment, getComments} 

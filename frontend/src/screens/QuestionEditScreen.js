@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { MDBInput, MDBBtn } from "mdbreact";
 import { useDispatch, useSelector } from 'react-redux';
-import { editQuestion, getAllComments, replyQuestion } from "../actions/questionActions";
+import { editQuestion, getAllComments, replyQuestion, commentDelete } from "../actions/questionActions";
 import Loader from '../components/Loader';
 import "../index.css"
 
@@ -10,7 +10,7 @@ const QuestionEditScreen = ({location, history}) => {
     const questionId = questionObject["_id"]
     const userId = questionObject["user"]
     const [seeComments, setSeeComments] = useState(false)
-    const [done, setDone] = useState(false)
+    // const [done, setDone] = useState(false)
 
     const [formData, setFormData] = useState({
         question: "",
@@ -25,19 +25,23 @@ const QuestionEditScreen = ({location, history}) => {
     const typedReply = useRef()
 
     useEffect(() => {
-        setDone(false)
+        // setDone(false)
         typedReply.current.state.innerValue = ""
         dispatch(getAllComments(questionId))
-    }, [dispatch, seeComments, done])
+    }, [dispatch, seeComments. comments])
 
     const updateHandler = e => {
         if (e.target.name === "questionBtn") {
             dispatch(editQuestion(userId, questionId, formData.question))
-            history.push(`/user/${userId}/questions/`)
         } else {
             dispatch(replyQuestion(questionId, {"reply": formData.followup}))
-            setDone(true)
+            // setDone(true)
         }
+        history.push(`/user/${userId}/questions/`)
+    }
+
+    const deleteHandler = (qId, cId) => {
+        dispatch(commentDelete(qId, cId))
     }
 
     const handleChange = e => {
@@ -56,7 +60,18 @@ const QuestionEditScreen = ({location, history}) => {
                 {loadingComments && <Loader /> }
                 {comments && seeComments && comments.map((comment, i) => ( 
                     <div key={i}>
-                        <p><strong>{comment.name}:</strong> {comment.comment}</p>
+                        <p>
+                            <strong>{comment.name}:</strong> {comment.comment}
+                            <MDBBtn>
+                                <i className="fas fa-edit"></i>
+                            </MDBBtn>
+                            {comment.userId === userId && (
+                                <> 
+                                    {/* onClick={deleteHandler(comment.question, comment._id)} */}
+                                    <i className="fas fa-trash-alt" onClick={(e) => deleteHandler(comment.question, comment._id)}></i>
+                                </>
+                            )}
+                        </p>
                     </div>
                 ))}
                 {comments && seeComments && comments.length === 0 && <p>No Comments</p>}
