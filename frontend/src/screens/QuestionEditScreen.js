@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { MDBInput, MDBBtn } from "mdbreact";
 import { useDispatch, useSelector } from 'react-redux';
-import { editQuestion, getAllComments } from "../actions/questionActions";
+import { editQuestion, getAllComments, replyQuestion } from "../actions/questionActions";
 import Loader from '../components/Loader';
 import "../index.css"
 
@@ -10,39 +10,46 @@ const QuestionEditScreen = ({location, history}) => {
     const questionId = questionObject["_id"]
     const userId = questionObject["user"]
     const [seeComments, setSeeComments] = useState(false)
+    const [done, setDone] = useState(false)
 
-    const [question, setQuestion] = useState("")
+    const [formData, setFormData] = useState({
+        question: "",
+        followup: ""
+    })
 
     const dispatch = useDispatch()
 
     const questionComments = useSelector(state => state.questionComments)
     const { loading: loadingComments, comments } = questionComments
 
+    const typedReply = useRef()
+
     useEffect(() => {
-        if (seeComments) {
-            dispatch(getAllComments(questionId))
-        } 
-    }, [dispatch, seeComments])
+        setDone(false)
+        typedReply.current.state.innerValue = ""
+        dispatch(getAllComments(questionId))
+    }, [dispatch, seeComments, done])
 
     const updateHandler = e => {
-        dispatch(editQuestion(userId, questionId, question))
-        history.push(`/user/${userId}/questions/`)
+        if (e.target.name === "questionBtn") {
+            dispatch(editQuestion(userId, questionId, formData.question))
+            history.push(`/user/${userId}/questions/`)
+        } else {
+            dispatch(replyQuestion(questionId, {"reply": formData.followup}))
+            setDone(true)
+        }
     }
 
     const handleChange = e => {
-        setQuestion(e.target.value)
+        setFormData({...formData, [e.target.name]: e.target.value })
     }
-
-    // console.log(questionId)
-    // console.log(comments)
-    console.log(seeComments)
     
     return (
         <>
             <div style={{marginBottom: "2%"}}>
                 <p>{questionObject.question}</p>
-                <MDBInput hint={questionObject.question} onChange={handleChange}/>
-                <MDBBtn color="primary" onClick={updateHandler}>Update</MDBBtn>
+                <MDBInput name="question" hint={questionObject.question} onChange={handleChange}/>
+                <MDBBtn color="primary" name="questionBtn" onClick={updateHandler}>Update</MDBBtn>
                 <MDBBtn color="primary" onClick={(e) => setSeeComments(!seeComments)}>See Comments</MDBBtn>
             </div>
             <div>
@@ -53,6 +60,10 @@ const QuestionEditScreen = ({location, history}) => {
                     </div>
                 ))}
                 {comments && seeComments && comments.length === 0 && <p>No Comments</p>}
+            </div>
+            <div>
+                <MDBInput name="followup" ref={typedReply} onChange={handleChange}/>
+                <MDBBtn color="primary" name="replyBtn" onClick={updateHandler}>Reply</MDBBtn>
             </div>
         </>
     )
