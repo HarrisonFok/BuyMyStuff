@@ -10,7 +10,6 @@ const QuestionEditScreen = ({location, history}) => {
     const questionId = questionObject["_id"]
     const userId = questionObject["user"]
     const [seeComments, setSeeComments] = useState(false)
-    // const [done, setDone] = useState(false)
 
     const [formData, setFormData] = useState({
         question: "",
@@ -25,7 +24,6 @@ const QuestionEditScreen = ({location, history}) => {
     const typedReply = useRef()
 
     useEffect(() => {
-        // setDone(false)
         typedReply.current.state.innerValue = ""
         dispatch(getAllComments(questionId))
     }, [dispatch, seeComments. comments])
@@ -35,7 +33,6 @@ const QuestionEditScreen = ({location, history}) => {
             dispatch(editQuestion(userId, questionId, formData.question))
         } else {
             dispatch(replyQuestion(questionId, {"reply": formData.followup}))
-            // setDone(true)
         }
         history.push(`/user/${userId}/questions/`)
     }
