@@ -55,6 +55,20 @@ const QuestionEditScreen = ({location, history}) => {
         history.push(`/user/${userId}/questions/`)
     }
 
+    const switchModeHandler = commentId => {
+        const replyModeMsg = "Switched back to reply mode. Type your message."
+        const editModeMsg = "Switched the edit mode. Type your message to edit the targeted comment."
+        setEditCommentId(commentId)
+        if (commentId === editCommentId) {
+            setIsEdit(!isEdit)
+            isEdit && alert(replyModeMsg)
+            !isEdit && alert(editModeMsg)
+        } else {
+            setIsEdit(true)
+            alert(editModeMsg)
+        }
+    }
+
     const handleChange = e => {
         setFormData({...formData, [e.target.name]: e.target.value })
     }
@@ -74,7 +88,7 @@ const QuestionEditScreen = ({location, history}) => {
                         <p>
                             <strong>{comment.name}:</strong> {comment.comment}
                             {comment.userId === userId && ( 
-                                <MDBBtn onClick={(e) => {setIsEdit(!isEdit); setEditCommentId(comment._id)}}>
+                                <MDBBtn onClick={(e) => switchModeHandler(comment._id)}>
                                     <i className="fas fa-edit"></i>
                                 </MDBBtn>
                             )}
