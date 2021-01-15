@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import { MDBInput, MDBBtn } from "mdbreact";
 import { useDispatch, useSelector } from 'react-redux';
-import { editQuestion, getAllComments, replyQuestion, commentDelete } from "../actions/questionActions";
+import { editQuestion, getAllComments, replyQuestion, commentEdit, commentDelete } from "../actions/questionActions";
 import Loader from '../components/Loader';
 import "../index.css"
 
@@ -10,6 +10,8 @@ const QuestionEditScreen = ({location, history}) => {
     const questionId = questionObject["_id"]
     const userId = questionObject["user"]
     const [seeComments, setSeeComments] = useState(false)
+    const [isEdit, setIsEdit] = useState(false)
+    const [editCommentId, setEditCommentId] = useState("")
 
     const [formData, setFormData] = useState({
         question: "",
@@ -21,18 +23,29 @@ const QuestionEditScreen = ({location, history}) => {
     const questionComments = useSelector(state => state.questionComments)
     const { loading: loadingComments, comments } = questionComments
 
-    const typedReply = useRef()
+    const refObj = useRef({})
 
     useEffect(() => {
-        typedReply.current.state.innerValue = ""
+        // typedReply.current.state.innerValue = ""
         dispatch(getAllComments(questionId))
-    }, [dispatch, seeComments. comments])
+    }, [dispatch, seeComments. comments, isEdit])
 
     const updateHandler = e => {
         if (e.target.name === "questionBtn") {
             dispatch(editQuestion(userId, questionId, formData.question))
-        } else {
-            dispatch(replyQuestion(questionId, {"reply": formData.followup}))
+        } else if (e.target.name === "replyBtn") {
+            if (refObj.current["typedReply"])
+                dispatch(replyQuestion(questionId, {"reply": formData.followup}))
+            else { // (refObj.current["typedEdit"])
+                const body = {
+                    "question": questionId,
+                    "userId": userId,
+                    "name": questionObject.name,
+                    "comment": refObj.current["typedEdit"].state.innerValue
+                }
+                // dispatch edit comment
+                dispatch(commentEdit(questionId, editCommentId, body))
+            }
         }
         history.push(`/user/${userId}/questions/`)
     }
@@ -60,8 +73,8 @@ const QuestionEditScreen = ({location, history}) => {
                     <div key={i}>
                         <p>
                             <strong>{comment.name}:</strong> {comment.comment}
-                            {comment.userId === userId && (
-                                <MDBBtn>
+                            {comment.userId === userId && ( 
+                                <MDBBtn onClick={(e) => {setIsEdit(!isEdit); setEditCommentId(comment._id)}}>
                                     <i className="fas fa-edit"></i>
                                 </MDBBtn>
                             )}
@@ -77,8 +90,8 @@ const QuestionEditScreen = ({location, history}) => {
                 {comments && seeComments && comments.length === 0 && <p>No Comments</p>}
             </div>
             <div>
-                <MDBInput name="followup" ref={typedReply} onChange={handleChange}/>
-                <MDBBtn color="primary" name="replyBtn" onClick={updateHandler}>Reply</MDBBtn>
+                <MDBInput name="followup" ref={e => isEdit ? refObj.current["typedEdit"] = e : refObj.current["typedReply"] = e} onChange={handleChange}/>
+                <MDBBtn color="primary" name="replyBtn" onClick={updateHandler}>{refObj.current["typedReply"] ? "Reply" : "Edit"}</MDBBtn>
             </div>
         </>
     )

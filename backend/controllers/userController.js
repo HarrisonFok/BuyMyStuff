@@ -339,7 +339,6 @@ const deleteComment = asyncHandler(async (req, res) => {
 // @route PUT /api/users/questionsList/:qId/comments/:cId
 // @access Private
 const editComment = asyncHandler(async (req, res) => {
-    console.log(req.body)
     const question = await Question.findById(req.params.qId)
     const comment = await Comment.findById(req.params.cId)
 
