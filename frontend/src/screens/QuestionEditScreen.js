@@ -39,6 +39,7 @@ const QuestionEditScreen = ({location, history}) => {
 
     const deleteHandler = (qId, cId) => {
         dispatch(commentDelete(qId, cId))
+        history.push(`/user/${userId}/questions/`)
     }
 
     const handleChange = e => {
@@ -63,10 +64,10 @@ const QuestionEditScreen = ({location, history}) => {
                                 <i className="fas fa-edit"></i>
                             </MDBBtn>
                             {comment.userId === userId && (
-                                <> 
+                                <MDBBtn> 
                                     {/* onClick={deleteHandler(comment.question, comment._id)} */}
                                     <i className="fas fa-trash-alt" onClick={(e) => deleteHandler(comment.question, comment._id)}></i>
-                                </>
+                                </MDBBtn>
                             )}
                         </p>
                     </div>
