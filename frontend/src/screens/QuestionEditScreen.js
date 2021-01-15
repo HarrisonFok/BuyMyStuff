@@ -60,9 +60,11 @@ const QuestionEditScreen = ({location, history}) => {
                     <div key={i}>
                         <p>
                             <strong>{comment.name}:</strong> {comment.comment}
-                            <MDBBtn>
-                                <i className="fas fa-edit"></i>
-                            </MDBBtn>
+                            {comment.userId === userId && (
+                                <MDBBtn>
+                                    <i className="fas fa-edit"></i>
+                                </MDBBtn>
+                            )}
                             {comment.userId === userId && (
                                 <MDBBtn> 
                                     {/* onClick={deleteHandler(comment.question, comment._id)} */}

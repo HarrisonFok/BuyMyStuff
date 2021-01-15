@@ -335,6 +335,24 @@ const deleteComment = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc Edit a user reply (comment) by the user
+// @route PUT /api/users/questionsList/:qId/comments/:cId
+// @access Private
+const editComment = asyncHandler(async (req, res) => {
+    console.log(req.body)
+    const question = await Question.findById(req.params.qId)
+    const comment = await Comment.findById(req.params.cId)
+
+    if (question && comment) {
+        // Delete the question with the given id
+        await Comment.findByIdAndUpdate(req.params.cId, req.body, {useFindAndModify: false})
+        res.status(201).json({message: "Comment edited"})
+    } else {
+        res.status(404)
+        throw new Error("Comment not found")
+    }
+});
+
 // @desc Get all comments associated to a question
 // @route GET /api/users/questionsList/:qId/comments
 // @access Private
@@ -350,4 +368,4 @@ const getComments = asyncHandler(async (req, res) => {
     }
 });
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions, replyQuestion, deleteComment, getComments} 
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions, replyQuestion, editComment, deleteComment, getComments} 
