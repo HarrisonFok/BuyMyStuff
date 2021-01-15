@@ -3,7 +3,7 @@ import { MDBInput, MDBBtn } from "mdbreact";
 import { useDispatch, useSelector } from 'react-redux';
 import { editQuestion, getAllComments, replyQuestion, commentEdit, commentDelete } from "../actions/questionActions";
 import Loader from '../components/Loader';
-import "../index.css"
+import "./QuestionEditScreen.css"
 
 const QuestionEditScreen = ({location, history}) => {
     const questionObject = location.state.questionObj
@@ -85,18 +85,18 @@ const QuestionEditScreen = ({location, history}) => {
                 {loadingComments && <Loader /> }
                 {comments && seeComments && comments.map((comment, i) => ( 
                     <div key={i}>
+                        {comment.userId === userId && ( 
+                            <MDBBtn onClick={(e) => switchModeHandler(comment._id)}>
+                                <i className="fas fa-edit"></i>
+                            </MDBBtn>
+                        )}
+                        {comment.userId === userId && (
+                            <MDBBtn> 
+                                <i className="fas fa-trash-alt" onClick={(e) => deleteHandler(comment.question, comment._id)}></i>
+                            </MDBBtn>
+                        )}
                         <p>
                             <strong>{comment.name}:</strong> {comment.comment}
-                            {comment.userId === userId && ( 
-                                <MDBBtn onClick={(e) => switchModeHandler(comment._id)}>
-                                    <i className="fas fa-edit"></i>
-                                </MDBBtn>
-                            )}
-                            {comment.userId === userId && (
-                                <MDBBtn> 
-                                    <i className="fas fa-trash-alt" onClick={(e) => deleteHandler(comment.question, comment._id)}></i>
-                                </MDBBtn>
-                            )}
                         </p>
                     </div>
                 ))}
