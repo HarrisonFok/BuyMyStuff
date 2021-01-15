@@ -9,26 +9,24 @@ import Loader from '../components/Loader';
 import {getUserDetails, updateUserProfile} from "../actions/userActions";
 import {listMyOrders} from "../actions/orderActions";
 
-const ProfileScreen = ({location, history}) => {
-    // Set component level states
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPwd, setConfirmPwd] = useState("")
-    const [message, setMessage] = useState(null)
-
-    const dispatch = useDispatch()
-
-    const userDetails = useSelector(state => state.userDetails);
-    // look at user reducer to know what is stored inside the state
-    const {loading, error, user} = userDetails;
-
+const ProfileScreen = ({history}) => {
     // Check to see if the user is logged in
     const userLogin = useSelector(state => state.userLogin);
     // look at user reducer to know what is stored inside the state
     const {userInfo} = userLogin;
 
-    console.log("userInfo: ", userInfo)
+    const userDetails = useSelector(state => state.userDetails);
+    // look at user reducer to know what is stored inside the state
+    const {loading, error, user} = userDetails;
+
+    // Set component level states
+    const [name, setName] = useState(userInfo.name)
+    const [email, setEmail] = useState(userInfo.email)
+    const [password, setPassword] = useState("")
+    const [confirmPwd, setConfirmPwd] = useState("")
+    const [message, setMessage] = useState(null)
+
+    const dispatch = useDispatch()
 
     // Check to see if the user profile is updated
     const userUpdateProfile = useSelector(state => state.userUpdateProfile);
@@ -51,8 +49,8 @@ const ProfileScreen = ({location, history}) => {
                 dispatch(listMyOrders())
             } else {
                 // auto set in the form fields
-                setName(user.name)
-                setEmail(user.email)
+                setName(name)
+                setEmail(email)
             }
         }
     }, [dispatch, history, userInfo, user])

@@ -94,7 +94,6 @@ const QuestionEditScreen = ({location, history}) => {
                             )}
                             {comment.userId === userId && (
                                 <MDBBtn> 
-                                    {/* onClick={deleteHandler(comment.question, comment._id)} */}
                                     <i className="fas fa-trash-alt" onClick={(e) => deleteHandler(comment.question, comment._id)}></i>
                                 </MDBBtn>
                             )}
