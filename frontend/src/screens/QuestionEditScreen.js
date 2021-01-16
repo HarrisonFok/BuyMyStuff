@@ -10,7 +10,7 @@ const QuestionEditScreen = ({location, history}) => {
     const questionObject = location.state.questionObj
     const questionId = questionObject["_id"]
     const userId = questionObject["user"]
-    const [doneReply, setDoneReply] = useState(false)
+    const [done, setDone] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const [editCommentId, setEditCommentId] = useState("")
 
@@ -27,10 +27,10 @@ const QuestionEditScreen = ({location, history}) => {
     const refObj = useRef({})
 
     useEffect(() => {
-        // typedReply.current.state.innerValue = ""
-        setDoneReply(false)
+        setDone(false)
+        refObj.current["typedReply"] === null ? refObj.current["typedEdit"].state.innerValue = "" : refObj.current["typedReply"].state.innerValue = ""
         dispatch(getAllComments(questionId))
-    }, [dispatch, isEdit, doneReply])
+    }, [dispatch, isEdit, done])
 
     const updateHandler = e => {
         if (e.target.name === "questionBtn") {
@@ -38,7 +38,7 @@ const QuestionEditScreen = ({location, history}) => {
         } else if (e.target.name === "replyBtn") {
             if (refObj.current["typedReply"]) {
                 dispatch(replyQuestion(questionId, {"reply": formData.followup}))
-                setDoneReply(true)
+                setDone(true)
             } else { // (refObj.current["typedEdit"])
                 const body = {
                     "question": questionId,
@@ -50,12 +50,12 @@ const QuestionEditScreen = ({location, history}) => {
                 dispatch(commentEdit(questionId, editCommentId, body))
             }
         }
-        history.push(`/user/${userId}/questions/`)
+        setDone(true)
     }
 
     const deleteHandler = (qId, cId) => {
         dispatch(commentDelete(qId, cId))
-        history.push(`/user/${userId}/questions/`)
+        setDone(true)
     }
 
     const switchModeHandler = commentId => {
@@ -83,7 +83,8 @@ const QuestionEditScreen = ({location, history}) => {
                 <MDBInput name="question" hint={questionObject.question} onChange={handleChange}/>
                 <MDBBtn color="primary" name="questionBtn" onClick={updateHandler}>Update</MDBBtn>
             </div>
-            {doneReply && toastr.success('Added comment!')}
+            {done && !isEdit && toastr.success('Comment added!')}
+            {done && isEdit && toastr.success('Comment edited!')}
             <div>
                 {loadingComments && <Loader /> }
                 {comments && comments.map((comment, i) => ( 
