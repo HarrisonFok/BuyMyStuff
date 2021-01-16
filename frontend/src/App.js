@@ -23,6 +23,8 @@ import QuestionScreen from './screens/QuestionScreen';
 import QuestionEditScreen from './screens/QuestionEditScreen';
 import QuestionsListScreen from './screens/QuestionsListScreen';
 import QuestionReplyScreen from './screens/QuestionReplyScreen';
+import ReduxToastr from 'react-redux-toastr'
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 
 const App = () => {
   return (
@@ -62,6 +64,16 @@ const App = () => {
         </Container>
       </main>
       <Footer />
+      <ReduxToastr
+        timeOut={4000}
+        newestOnTop={false}
+        preventDuplicates
+        position="top-left"
+        getState={(state) => state.toastr} // This is the default
+        transitionIn="fadeIn"
+        transitionOut="fadeOut"
+        progressBar
+        closeOnToastrClick/>
     </Router>
   );
 }

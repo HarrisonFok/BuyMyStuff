@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { editQuestion, getAllComments, replyQuestion, commentEdit, commentDelete } from "../actions/questionActions";
 import Loader from '../components/Loader';
 import "./QuestionEditScreen.css"
+import {toastr} from 'react-redux-toastr'
 
 const QuestionEditScreen = ({location, history}) => {
     const questionObject = location.state.questionObj
     const questionId = questionObject["_id"]
     const userId = questionObject["user"]
-    const [seeComments, setSeeComments] = useState(false)
+    const [doneReply, setDoneReply] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const [editCommentId, setEditCommentId] = useState("")
 
@@ -27,16 +28,18 @@ const QuestionEditScreen = ({location, history}) => {
 
     useEffect(() => {
         // typedReply.current.state.innerValue = ""
+        setDoneReply(false)
         dispatch(getAllComments(questionId))
-    }, [dispatch, seeComments. comments, isEdit])
+    }, [dispatch, isEdit, doneReply])
 
     const updateHandler = e => {
         if (e.target.name === "questionBtn") {
             dispatch(editQuestion(userId, questionId, formData.question))
         } else if (e.target.name === "replyBtn") {
-            if (refObj.current["typedReply"])
+            if (refObj.current["typedReply"]) {
                 dispatch(replyQuestion(questionId, {"reply": formData.followup}))
-            else { // (refObj.current["typedEdit"])
+                setDoneReply(true)
+            } else { // (refObj.current["typedEdit"])
                 const body = {
                     "question": questionId,
                     "userId": userId,
@@ -76,14 +79,14 @@ const QuestionEditScreen = ({location, history}) => {
     return (
         <>
             <div style={{marginBottom: "2%"}}>
-                <p>{questionObject.question}</p>
+                <p>Question: {questionObject.question}</p>
                 <MDBInput name="question" hint={questionObject.question} onChange={handleChange}/>
                 <MDBBtn color="primary" name="questionBtn" onClick={updateHandler}>Update</MDBBtn>
-                <MDBBtn color="primary" onClick={(e) => setSeeComments(!seeComments)}>See Comments</MDBBtn>
             </div>
+            {doneReply && toastr.success('Added comment!')}
             <div>
                 {loadingComments && <Loader /> }
-                {comments && seeComments && comments.map((comment, i) => ( 
+                {comments && comments.map((comment, i) => ( 
                     <div key={i}>
                         {comment.userId === userId && ( 
                             <MDBBtn onClick={(e) => switchModeHandler(comment._id)}>
@@ -100,7 +103,7 @@ const QuestionEditScreen = ({location, history}) => {
                         </p>
                     </div>
                 ))}
-                {comments && seeComments && comments.length === 0 && <p>No Comments</p>}
+                {comments && comments.length === 0 && <p>No Comments</p>}
             </div>
             <div>
                 <MDBInput name="followup" ref={e => isEdit ? refObj.current["typedEdit"] = e : refObj.current["typedReply"] = e} onChange={handleChange}/>
