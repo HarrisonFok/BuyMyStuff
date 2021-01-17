@@ -5,6 +5,8 @@ import { editQuestion, getAllComments, replyQuestion, commentEdit, commentDelete
 import Loader from '../components/Loader';
 import "./QuestionEditScreen.css"
 import {toastr} from 'react-redux-toastr'
+import 'emoji-mart/css/emoji-mart.css';
+import { Picker, Emoji } from 'emoji-mart';
 
 const QuestionEditScreen = ({location, history}) => {
     const questionObject = location.state.questionObj
@@ -13,6 +15,9 @@ const QuestionEditScreen = ({location, history}) => {
     const [done, setDone] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
     const [editCommentId, setEditCommentId] = useState("")
+
+    const [reactionShown, setReactionShown] = useState(false)
+    const [selectedEmojis, setSelectedEmojis] = useState([])
 
     const [formData, setFormData] = useState({
         question: "",
@@ -72,9 +77,20 @@ const QuestionEditScreen = ({location, history}) => {
         }
     }
 
+    const onReactionClick = () => {
+        setReactionShown(!reactionShown)
+        console.log(reactionShown)
+    }
+
+    const handleEmojiSelect = (emoji) => {
+        setSelectedEmojis([...selectedEmojis, emoji])
+    }
+
     const handleChange = e => {
         setFormData({...formData, [e.target.name]: e.target.value })
     }
+
+    console.log("selected emojis: ", selectedEmojis)
     
     return (
         <>
@@ -102,6 +118,29 @@ const QuestionEditScreen = ({location, history}) => {
                         <p>
                             <strong>{comment.name}:</strong> {comment.comment}
                         </p>
+                        {/* <Picker showPreview={false} showSkinTones={false}/> */}
+                        <div onClick={(e) => onReactionClick()}>
+                            <i 
+                                className="fa fa-smile-o" 
+                                aria-hidden="true" 
+                                style={{ fontSize: 22, color: '#36b9e0' }} 
+                            />
+                            <span>+</span>
+                        </div>
+                        {reactionShown && 
+                            (<div className="reactions">
+                                <Picker
+                                    showPreview={false}
+                                    showSkinTones={false}
+                                    onSelect={handleEmojiSelect}
+                                />
+                            </div>)
+                        }
+                        {selectedEmojis.map((emoji, i) => {
+                            return (
+                                <Emoji size={26} emoji={emoji} key={i}/>
+                            )
+                        })}
                     </div>
                 ))}
                 {comments && comments.length === 0 && <p>No Comments</p>}
