@@ -77,15 +77,13 @@ const QuestionEditScreen = ({location, history}) => {
         }
     }
 
-    const onReactionClick = (msgIndex) => {
-        console.log(msgIndex)
+    const onReactionClick = () => {
         setReactionShown(!reactionShown)
+        console.log(reactionShown)
     }
 
-    const handleEmojiSelect = (emoji, index) => {
-        console.log(emoji)
-        console.log(index)
-        setSelectedEmojis([...selectedEmojis, {index: emoji}])
+    const handleEmojiSelect = (emoji) => {
+        setSelectedEmojis([...selectedEmojis, emoji])
     }
 
     const handleChange = e => {
@@ -107,11 +105,6 @@ const QuestionEditScreen = ({location, history}) => {
                 {loadingComments && <Loader /> }
                 {comments && comments.map((comment, i) => ( 
                     <div key={i}>
-                        {selectedEmojis.map((emoji, i) => {
-                            return (
-                                <Emoji size={26} emoji={emoji} key={i}/>
-                            )
-                        })}
                         {comment.userId === userId && ( 
                             <MDBBtn onClick={(e) => switchModeHandler(comment._id)}>
                                 <i className="fas fa-edit"></i>
@@ -126,18 +119,28 @@ const QuestionEditScreen = ({location, history}) => {
                             <strong>{comment.name}:</strong> {comment.comment}
                         </p>
                         {/* <Picker showPreview={false} showSkinTones={false}/> */}
-                        <div onClick={(e) => onReactionClick(i)}>
-                            <i class="fas fa-plus-square"></i>
+                        <div onClick={(e) => onReactionClick()}>
+                            <i 
+                                className="fa fa-smile-o" 
+                                aria-hidden="true" 
+                                style={{ fontSize: 22, color: '#36b9e0' }} 
+                            />
+                            <span>+</span>
                         </div>
                         {reactionShown && 
-                            (<div className="reactions" key={i}>
+                            (<div className="reactions">
                                 <Picker
                                     showPreview={false}
                                     showSkinTones={false}
-                                    onSelect={(e) => handleEmojiSelect(e, i)}
+                                    onSelect={handleEmojiSelect}
                                 />
                             </div>)
                         }
+                        {selectedEmojis.map((emoji, i) => {
+                            return (
+                                <Emoji size={26} emoji={emoji} key={i}/>
+                            )
+                        })}
                     </div>
                 ))}
                 {comments && comments.length === 0 && <p>No Comments</p>}
