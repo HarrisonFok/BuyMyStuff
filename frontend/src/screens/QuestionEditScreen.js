@@ -77,15 +77,15 @@ const QuestionEditScreen = ({location, history}) => {
         }
     }
 
-    const onReactionClick = (msgIndex) => {
-        console.log(msgIndex)
+    const onReactionClick = () => {
         setReactionShown(!reactionShown)
+        console.log(reactionShown)
     }
 
-    const handleEmojiSelect = (emoji, index) => {
+    const handleEmojiSelect = (emoji, i) => {
         console.log(emoji)
-        console.log(index)
-        setSelectedEmojis([...selectedEmojis, {index: emoji}])
+        console.log(i)
+        setSelectedEmojis([...selectedEmojis, emoji])
     }
 
     const handleChange = e => {
@@ -126,8 +126,13 @@ const QuestionEditScreen = ({location, history}) => {
                             <strong>{comment.name}:</strong> {comment.comment}
                         </p>
                         {/* <Picker showPreview={false} showSkinTones={false}/> */}
-                        <div onClick={(e) => onReactionClick(i)}>
-                            <i class="fas fa-plus-square"></i>
+                        <div onClick={(e) => onReactionClick()}>
+                            <i 
+                                className="fa fa-smile-o" 
+                                aria-hidden="true" 
+                                style={{ fontSize: 22, color: '#36b9e0' }} 
+                            />
+                            <span>+</span>
                         </div>
                         {reactionShown && 
                             (<div className="reactions" key={i}>
