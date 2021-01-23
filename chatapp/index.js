@@ -1,3 +1,7 @@
+const { ApolloServer, gql } = require("apollo-server")
+
+const crypto = require("crypto")
+
 const db = {
     users: [
         {id: "1", email: "a@a.com", name: "A", avatarUrl: "https://google.com"},
@@ -10,23 +14,8 @@ const db = {
     ]
 }
 
-class User {
-    constructor(user){
-        Object.assign(this, user)
-    }
-    get messages() {
-        return db.messages.filter(message => message.userId === this.id)
-    }
-}
-
-const express = require("express")
-// Hook up graphql and express
-const { graphqlHTTP } = require("express-graphql")
-const { buildSchema } = require("graphql")
-const crypto = require("crypto")
-
 // Mutation create actions
-const schema = buildSchema(`
+const typeDefs = gql`
     type Query {
         users: [User!]!
         user(id: ID!): User
@@ -50,33 +39,39 @@ const schema = buildSchema(`
         body: String!
         createdAt: String
     }
-`)
+`
 
 // To actually return something for the message, need a resolver function
-const rootValue = {
-    users: () => db.users.map(user => new User(user)),
-    user: ({id}) => db.users.find(user => user.id === id),
-    messages: () => db.messages,
-    addUser: ({email, name}) => {
-        const user = {
-            id: crypto.randomBytes(10).toString("hex"),
-            email,
-            name
+const resolvers = {
+    // where you define the top-level resolvers
+    Query: {
+        users: () => db.users,
+        user: (root, {id}) => db.users.find(user => user.id === id),
+        messages: () => db.messages,
+    },
+    Mutation: {
+        addUser: (root, {email, name}) => {
+            const user = {
+                id: crypto.randomBytes(10).toString("hex"),
+                email,
+                name
+            }
+            db.users.push(user)
+            return user
         }
-        db.users.push(user)
-        return user
+    },
+    // With Apollo server, you can create nested types
+    User: {
+        messages: (user) => {
+            // Root object will be the user because the user is getting resolved on the users collection
+            return db.messages.filter(message => message.userId === user.id)
+        }
     }
 }
 
-const app = express()
+const server = new ApolloServer({typeDefs, resolvers})
 
-app.use("/graphql", graphqlHTTP({
-    schema,
-    rootValue,
-    graphiql: true
-}))
-
-app.listen(3000, () => console.log("Listening to port 3000"))
+server.listen().then(({url}) => console.log(url))
 
 /*
 // On Graphiql
@@ -110,4 +105,28 @@ query getUser($id: ID!) {
       id
     }
   }
+
+{
+  users {
+    id
+    email
+    name
+    messages {
+      id
+      body
+      createdAt
+    }
+  }
+}
+
+{
+  user(id:1){
+    id
+    name
+    messages{
+      body
+      createdAt
+    }
+  }
+}
 */
