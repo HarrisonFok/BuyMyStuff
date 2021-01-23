@@ -4,13 +4,17 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "watch": "nodemon"
+    "start": "NODE_ENV=production node -r esm",
+    "dev": "NODE_ENV=development nodemon -r esm"
   },
   "dependencies": {
-    "apollo-server": "^2.19.2",
+    "apollo-server-express": "^2.19.2",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
     "graphql": "^15.4.0"
   },
   "devDependencies": {
+    "standard": "^16.0.3",
     "supervisor": "^0.12.0"
   }
 }
