@@ -9,6 +9,10 @@
     "server": "nodemon backend/server",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "chatServer": "cd chatapp && cd server && yarn start",
+    "chatClient": "cd chatapp && cd client && yarn start",
+    "chatHomepage": "cd chatapp && cd home-page && yarn start",
+    "chatDev": "concurrently \"yarn chatServer\" \"yarn chatClient\" \"yarn chatHomepage\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },
