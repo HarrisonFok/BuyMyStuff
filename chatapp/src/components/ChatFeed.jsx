@@ -3,6 +3,23 @@ import MyMessage from './MyMessage';
 import TheirMessage from './TheirMessage';
 
 const ChatFeed = (props) => {
+    /*
+    {height: "100vh", projectID: "89a5f4e9-5a8e-47cf-97e9-9270d3c314ff", userName: "alice", userSecret: "alice", renderChatFeed: ƒ, …}
+    activeChat: 737
+    chats: {737: {…}}
+    creds: undefined
+    height: "100vh"
+    messages:
+    1670: {id: 1670, sender: {…}, created: "2021-01-30 17:33:42.138518+00:00", attachments: Array(0), text: "hi"}
+    __proto__: Object
+    projectID: "89a5f4e9-5a8e-47cf-97e9-9270d3c314ff"
+    renderChatFeed: chatAppProps => {…}
+    typingCounter: {}
+    typingData: {}
+    userName: "alice"
+    userSecret: "alice"
+    __proto__: Object
+    */
     const { chats, activeChat, userName, messages } = props
 
     const chat = chats && chats[activeChat]
@@ -19,8 +36,8 @@ const ChatFeed = (props) => {
                     <div className="message-block">
                         {
                             isMyMessage 
-                            ? <MyMessage /> 
-                            : <TheirMessage />
+                            ? <MyMessage message={message}/> 
+                            : <TheirMessage message={message} lastMessage={messages[lastMsgKey]}/>
                         }
                     </div>
                     <div className="read-receipts" style={{marginRight: isMyMessage ? "18px" : "0px", marginLeft: isMyMessage ? "0px" : "68px"}}>
