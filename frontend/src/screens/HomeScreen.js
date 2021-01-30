@@ -4,7 +4,7 @@ import React, {useEffect} from 'react'
 // useSelector - select part of the state
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from '../actions/productActions';
-import {Row, Col} from "react-bootstrap"
+import {Row, Col, Button} from "react-bootstrap"
 import Product from "../components/Product";
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -34,10 +34,15 @@ const HomeScreen = ({match, history}) => {
     // keyword has to be added so that when the user types in something different (i.e. keyword changes), the component will re-render
     }, [dispatch, keyword, pageNumber])
 
+    const toChatApp = () => {
+        console.log("chat app")
+    }
+
     // depedencies (array): when you want this to fire off some side-effects if they change
     return (
         <>
             <Meta />
+            <Button onClick={toChatApp}>Chatt App</Button>
             {!keyword ? <ProductCarousel /> : <Link to="/" className="btn btn-light">Go Back</Link>}
             <h1>My Products</h1>
             {/* if error then output error */}
