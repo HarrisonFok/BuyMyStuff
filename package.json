@@ -8,7 +8,8 @@
     "start": "node backend/server",
     "server": "nodemon backend/server",
     "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "chatapp": "PORT=3001 npm start --prefix chatapp",
+    "dev": "concurrently \"npm run chatapp\" \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },

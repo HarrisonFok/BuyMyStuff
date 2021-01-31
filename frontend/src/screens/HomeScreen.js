@@ -35,7 +35,7 @@ const HomeScreen = ({match, history}) => {
     }, [dispatch, keyword, pageNumber])
 
     const toChatApp = () => {
-        console.log("chat app")
+        window.location.assign("http://localhost:3001")
     }
 
     // depedencies (array): when you want this to fire off some side-effects if they change
