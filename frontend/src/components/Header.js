@@ -32,6 +32,10 @@ const Header = () => {
         dispatch(logout())
     }
 
+    const chatAppHandler = () => {
+        window.location.assign("http://localhost:3001")
+    }
+
     // console.log("userInfo: ", userInfo)
     
     return (
