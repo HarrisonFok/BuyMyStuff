@@ -27,6 +27,12 @@ const HomeScreen = ({match, history}) => {
     // all the possible states (seen in reducer)
     const {loading, error, products, page, pages} = productList
 
+    const userLogin = useSelector(state => state.userLogin)
+    const {userInfo} = userLogin
+    console.log("userInfo: ", userInfo)
+    const [firstName, lastName] = userInfo.name.split(" ")
+    const {email, token: password} = userInfo
+
     // useEffect to make a request to the backend
     // - executed whenever the page is loaded
     // - however, it's complaining because it's looking at localhost:3000 (need to add proxy)
@@ -36,7 +42,7 @@ const HomeScreen = ({match, history}) => {
     }, [dispatch, keyword, pageNumber])
 
     const toChatApp = () => {
-        dispatch(chatLogin())
+        dispatch(chatLogin(email, password, firstName, lastName))
     }
 
     // depedencies (array): when you want this to fire off some side-effects if they change
