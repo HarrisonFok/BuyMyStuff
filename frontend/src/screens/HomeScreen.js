@@ -12,6 +12,7 @@ import Paginate from "../components/Paginate";
 import ProductCarousel from '../components/ProductCarousel';
 import Meta from '../components/Meta';
 import { Link } from 'react-router-dom';
+import { chatLogin } from '../actions/chatActions';
 
 const HomeScreen = ({match, history}) => {
     // Called keyword because we set that in App.js (/:keyword)
@@ -35,7 +36,7 @@ const HomeScreen = ({match, history}) => {
     }, [dispatch, keyword, pageNumber])
 
     const toChatApp = () => {
-        window.location.assign("http://localhost:3001")
+        dispatch(chatLogin())
     }
 
     // depedencies (array): when you want this to fire off some side-effects if they change

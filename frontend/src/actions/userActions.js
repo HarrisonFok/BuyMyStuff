@@ -17,6 +17,7 @@ export const login = (email, password) => async(dispatch) => {
 
         // Log in the user - look at userController.js to see what kind of data you'll get
         const { data } = await axios.post("api/users/login", {email, password}, config)
+        console.log(data)
 
         dispatch({
             type: USER_LOGIN_SUCCESS,
@@ -25,6 +26,8 @@ export const login = (email, password) => async(dispatch) => {
 
         // Set userInfo in local storage
         localStorage.setItem("userInfo", JSON.stringify(data))
+        localStorage.setItem("username", JSON.stringify(data.name))
+        // localStorage.setItem("password", JSON.stringify(data.token))
     } catch (error) {
         dispatch({
             type: USER_LOGIN_FAIL,
