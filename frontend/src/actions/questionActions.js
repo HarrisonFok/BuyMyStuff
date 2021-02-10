@@ -63,7 +63,7 @@ export const deleteQuestion = (userId, qId) => async(dispatch) => {
 }
 
 export const editQuestion = (userId, qId, question) => async(dispatch) => {
-    const body = {question: question}
+    // const body = {question: question}
     try {
         dispatch({type: QUESTIONS_EDIT_REQUEST})
 

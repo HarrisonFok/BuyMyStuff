@@ -30,7 +30,7 @@ const QuestionEditScreen = ({location, history}) => {
         setDone(false)
         refObj.current["typedReply"] === null ? refObj.current["typedEdit"].state.innerValue = "" : refObj.current["typedReply"].state.innerValue = ""
         dispatch(getAllComments(questionId))
-    }, [dispatch, isEdit, done])
+    }, [dispatch, isEdit, done, questionId])
 
     const updateHandler = e => {
         if (e.target.name === "questionBtn") {
