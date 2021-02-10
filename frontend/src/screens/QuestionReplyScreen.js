@@ -9,7 +9,7 @@ const QuestionReplyScreen = ({location, history}) => {
     const [questionId, setQuestionId] = useState("")
     const [seeComments, setSeeComments] = useState(false)
 
-    const {user: userId} = location.state
+    // const {user: userId} = location.state
 
     const dispatch = useDispatch()
 
@@ -30,7 +30,7 @@ const QuestionReplyScreen = ({location, history}) => {
         if (seeComments) {
             dispatch(getAllComments(questionId))
         }
-    }, [dispatch, successReply, seeComments])
+    }, [dispatch, successReply, seeComments, location.pathname])
 
     const replyHandler = e => {
         const ret = {
