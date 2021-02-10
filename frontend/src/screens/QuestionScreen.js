@@ -2,14 +2,13 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Meta from '../components/Meta';
 import { Row, Col, Form, Card, ListGroup } from "react-bootstrap";
-import { MDBInput, MDBIcon, MDBBtn, MDBLink } from "mdbreact";
+import { MDBInput, MDBIcon, MDBBtn } from "mdbreact";
 import { useSelector, useDispatch } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import {listQuestions, addQuestion, deleteQuestion } from "../actions/questionActions";
 
 const QuestionScreen = ({match, history}) => {
-    const [comment, setComment] = useState("")
     const [question, setQuestion] = useState("")
     const [done, setDone] = useState(false)
 

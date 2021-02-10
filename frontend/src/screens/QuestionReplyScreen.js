@@ -9,7 +9,7 @@ const QuestionReplyScreen = ({location, history}) => {
     const [questionId, setQuestionId] = useState("")
     const [seeComments, setSeeComments] = useState(false)
 
-    const {user: userId} = location.state
+    // const {user: userId} = location.state
 
     const dispatch = useDispatch()
 
