@@ -3,7 +3,6 @@ import path from "path";
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from './config/db.js';
-import colors from "colors";
 import morgan from "morgan";
 import {notFound, errorHandler} from "./middleware/errorMiddleware.js"
 import productRoutes from "./routes/productRoutes.js";
