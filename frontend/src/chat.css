@@ -64,7 +64,7 @@ a {
 }
 
 .chat-sidebar {
-	background: var(--dark-color-b);
+	background: var(--light-color);
 	color: #fff;
 	padding: 20px 20px 60px;
 	overflow-y: scroll;
@@ -101,7 +101,7 @@ a {
 .chat-messages .message .meta {
 	font-size: 15px;
 	font-weight: bold;
-	color: var(--dark-color-b);
+	color: var(--success-color);
 	opacity: 0.7;
 	margin-bottom: 7px;
 }

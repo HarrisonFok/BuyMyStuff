@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 
 const ChatScreen = ({history, location}) => {
-    console.log(location)
     // Check to see if the user is logged in
     const userLogin = useSelector(state => state.userLogin);
     // look at user reducer to know what is stored inside the state
@@ -16,10 +15,10 @@ const ChatScreen = ({history, location}) => {
         const today = new Date()
         // Add a class to the div
         div.classList.add("message")
-        div.innerHTML = `<p class="meta">${userInfo.name} <span>${today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()}</span></p>
-        <p class="text">
+        div.innerHTML = `<label class="meta"><span>${today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()} </span>${userInfo.name}</label>
+        <label class="text">
             ${message}
-        </p>`
+        </label>`
         // Add the div to the chat-messages div
         document.querySelector(".chat-messages").appendChild(div)
     }

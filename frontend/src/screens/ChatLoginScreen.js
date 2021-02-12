@@ -8,8 +8,6 @@ const ChatScreen = () => {
     // look at user reducer to know what is stored inside the state
     const {userInfo} = userLogin;
 
-    console.log(userInfo)
-
     return (
 		<div className="join-container">
 			<header className="join-header">
