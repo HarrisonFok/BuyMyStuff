@@ -1,5 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
+import socketIOClient from 'socket.io-client'
+import { useEffect } from 'react';
 
 const ChatScreen = ({history, location}) => {
     // Check to see if the user is logged in
@@ -38,6 +40,11 @@ const ChatScreen = ({history, location}) => {
         e.preventDefault()
         history.push("/chatLogin")
     }
+
+    useEffect(() => {
+        const socket = socketIOClient("http://localhost:5000")
+        socket.on("messages", (data) => console.log(data))
+    })
 
     return (
         <div className="chat-container">

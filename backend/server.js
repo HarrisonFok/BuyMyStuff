@@ -10,6 +10,7 @@ import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import { io } from "socket.io-client";
 
 dotenv.config()
 
@@ -37,7 +38,7 @@ app.use("/api/upload", uploadRoutes)
 
 // socket.io
 const server = http.createServer(app)
-const io = require("socket.io").listen(server) 
+io(server) 
 // Assign socket object to every request
 app.use((req, res, next) => {
     req.io = io
