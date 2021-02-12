@@ -1,10 +1,10 @@
 // useState = states in functional components
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 // useDispatch - to call (dispatch) an action
 // useSelector - select part of the state
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from '../actions/productActions';
-import {Row, Col} from "react-bootstrap"
+import { Row, Col, Button } from "react-bootstrap"
 import Product from "../components/Product";
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -26,6 +26,12 @@ const HomeScreen = ({match, history}) => {
     // all the possible states (seen in reducer)
     const {loading, error, products, page, pages} = productList
 
+    const toChatApp = (e) => {
+        e.preventDefault()
+        console.log("to chat app")
+        history.push("/chatLogin")
+    }
+
     // useEffect to make a request to the backend
     // - executed whenever the page is loaded
     // - however, it's complaining because it's looking at localhost:3000 (need to add proxy)
@@ -37,6 +43,7 @@ const HomeScreen = ({match, history}) => {
     // depedencies (array): when you want this to fire off some side-effects if they change
     return (
         <>
+            <Button onClick={toChatApp}>Let's Chat!</Button>
             <Meta />
             {!keyword ? <ProductCarousel /> : <Link to="/" className="btn btn-light">Go Back</Link>}
             <h1>My Products</h1>
