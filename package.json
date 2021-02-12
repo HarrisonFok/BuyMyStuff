@@ -9,7 +9,7 @@
     "server": "nodemon backend/server",
     "serverChat": "nodemon backend/serverChat",
     "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run serverChat\"",
+    "dev": "concurrently \"npm run server\" \"npm run serverChat\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },
