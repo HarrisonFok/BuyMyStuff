@@ -7,7 +7,7 @@ import ChatScreen from './ChatScreen';
 let socket;
 const CONNECTION = "localhost:3000/";
 
-const ChatLoginScreen = () => {
+const ChatLoginScreen = ({history}) => {
     const [room, setRoom] = useState("JavaScript")
     const [username, setUsername] = useState("")
     const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -21,8 +21,6 @@ const ChatLoginScreen = () => {
       socket.emit("joinRoom", room)
       setIsLoggedIn(true)
     }
-
-    console.log(room)
 
     return (
         !isLoggedIn ?
@@ -59,7 +57,7 @@ const ChatLoginScreen = () => {
 			</main>
 		</div>) :
         (
-            <ChatScreen room={room} socket={socket}/>
+            <ChatScreen room={room} socket={socket} history={history}/>
         )
     )
 }

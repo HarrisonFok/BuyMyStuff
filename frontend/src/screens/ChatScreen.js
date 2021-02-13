@@ -4,19 +4,17 @@ import { useEffect } from 'react';
 
 const today = new Date()
 
-const ChatScreen = (props) => {
-    console.log(props.socket)
+const ChatScreen = ({room, socket, history}) => {
+    // console.log(socket.clients(room))
     // Check to see if the user is logged in
     const userLogin = useSelector(state => state.userLogin);
     // look at user reducer to know what is stored inside the state
     const {userInfo} = userLogin;
-    // let room = location.search.split("=")
-    // room = room[room.length-1]
 
     const [messageList, setMessageList] = useState([])
 
     useEffect(() => {
-        props.socket.on("receiveMessage", (data) => {
+        socket.on("receiveMessage", (data) => {
           console.log("receiveMessage socket: ", data)
           setMessageList([...messageList, data])
         })
@@ -43,13 +41,13 @@ const ChatScreen = (props) => {
         const msg = e.target.elements.msg.value
         // console.log(msg)
         let messageObj = {
-            room: props.room,
+            room: room,
             content: {
               author: userInfo.name,
               message: msg
             }
         }	   
-        await props.socket.emit("sendMessage", messageObj)
+        await socket.emit("sendMessage", messageObj)
         // setMessageList([...messageList, messageObj.content])
         outputMessage(msg)
         // Clear input
@@ -59,7 +57,7 @@ const ChatScreen = (props) => {
 
     const leaveRoom = (e) => {
         e.preventDefault()
-        props.history.push("/")
+        history.push("/")
     }
 
     return (
@@ -71,7 +69,7 @@ const ChatScreen = (props) => {
             <main className="chat-main">
             <div className="chat-sidebar">
                 <h3><i className="fas fa-comments"></i> Room Name:</h3>
-                <h2 id="room-name">{props.room}</h2>
+                <h2 id="room-name">{room}</h2>
                 <h3><i className="fas fa-users"></i> Users</h3>
                 <ul id="users"></ul>
             </div>
