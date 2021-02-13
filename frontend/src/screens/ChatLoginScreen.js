@@ -7,15 +7,11 @@ let socket;
 const CONNECTION = "localhost:3000/";
 
 const ChatLoginScreen = () => {
-    const [room, setRoom] = useState("")
+    const [room, setRoom] = useState("JavaScript")
     const [username, setUsername] = useState("")
   
-    useEffect(() => {
-      socket = io(CONNECTION)
-      console.log(socket)
-    })
-  
     const connectToRoom = () => {
+      console.log("connect to room")
       socket.emit("joinRoom", room)
     }
 
@@ -48,7 +44,7 @@ const ChatLoginScreen = () => {
                         <option value="Java">Java</option>
                     </select>
 					{/* </div> */}
-					<button type="submit" className="btn" onClick={connectToRoom}>Join Chat</button>
+					<button type="submit" className="btn" onClick={(e) => connectToRoom()}>Join Chat</button>
 				</form>
 			</main>
 		</div>

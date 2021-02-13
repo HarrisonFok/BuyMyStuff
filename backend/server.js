@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
         // data is the room name
         socket.join(data)
         console.log("data: ", data)
-        console.log("user joined room" + data)
+        console.log("user joined room " + data)
     })
 
     socket.on("sendMessage", (data) => {

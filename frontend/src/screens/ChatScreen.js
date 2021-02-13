@@ -18,12 +18,12 @@ const ChatScreen = ({history, location}) => {
     
     useEffect(() => {
         socket = io(CONNECTION)
-        console.log("Connected: ", socket)
+        // console.log("Connected: ", socket)
     })
 
     useEffect(() => {
         socket.on("receiveMessage", (data) => {
-          console.log(data)
+          console.log("receiveMessage socket: ", data)
           setMessageList([...messageList, data])
         })
         console.log("receiveMessage: ", messageList)
@@ -47,7 +47,7 @@ const ChatScreen = ({history, location}) => {
         e.preventDefault()
         // Get message text
         const msg = e.target.elements.msg.value
-        console.log(msg)
+        // console.log(msg)
         let messageObj = {
             room: room,
             content: {
@@ -56,6 +56,7 @@ const ChatScreen = ({history, location}) => {
             }
         }	   
         await socket.emit("sendMessage", messageObj)
+        // setMessageList([...messageList, messageObj.content])
         outputMessage(msg)
         // Clear input
         e.target.elements.msg.value = ""
