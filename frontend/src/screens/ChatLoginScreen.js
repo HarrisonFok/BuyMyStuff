@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import "../chat.css"
 import io from "socket.io-client"
 
@@ -13,7 +13,7 @@ const ChatLoginScreen = () => {
     useEffect(() => {
       socket = io(CONNECTION)
       console.log(socket)
-    }, [CONNECTION])
+    })
   
     const connectToRoom = () => {
       socket.emit("joinRoom", room)

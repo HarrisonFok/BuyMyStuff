@@ -18,13 +18,15 @@ const ChatScreen = ({history, location}) => {
     
     useEffect(() => {
         socket = io(CONNECTION)
-        console.log(socket)
-    }, [CONNECTION])
+        console.log("Connected: ", socket)
+    })
 
     useEffect(() => {
         socket.on("receiveMessage", (data) => {
+          console.log(data)
           setMessageList([...messageList, data])
         })
+        console.log("receiveMessage: ", messageList)
     })
 
     // Helper function to output message to DOM
@@ -39,21 +41,21 @@ const ChatScreen = ({history, location}) => {
         </label>`
         // Add the div to the chat-messages div
         document.querySelector(".chat-messages").appendChild(div)
-        let messageObj = {
-            room: room,
-            content: {
-              author: userInfo.name,
-              message: message
-            }
-        }	   
-        await socket.emit("sendMessage", messageObj)
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault()
         // Get message text
         const msg = e.target.elements.msg.value
         console.log(msg)
+        let messageObj = {
+            room: room,
+            content: {
+              author: userInfo.name,
+              message: msg
+            }
+        }	   
+        await socket.emit("sendMessage", messageObj)
         outputMessage(msg)
         // Clear input
         e.target.elements.msg.value = ""

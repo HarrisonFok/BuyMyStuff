@@ -3,7 +3,7 @@ import path from "path";
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from './config/db.js';
-import { createServer } from "http";
+// import { createServer } from "http";
 import { Server } from "socket.io";
 import morgan from "morgan";
 import {notFound, errorHandler} from "./middleware/errorMiddleware.js"
@@ -69,7 +69,7 @@ io.on("connection", (socket) => {
     })
 
     socket.on("sendMessage", (data) => {
-        console.log(data)
+        console.log("sendMessage server: ", data)
         socket.to(data.room).emit("receiveMessage", data.content)
     })
 
