@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import "../chat.css"
 import io from "socket.io-client"
+import ChatScreen from './ChatScreen';
 
 let socket;
 const CONNECTION = "localhost:3000/";
@@ -9,14 +10,23 @@ const CONNECTION = "localhost:3000/";
 const ChatLoginScreen = () => {
     const [room, setRoom] = useState("JavaScript")
     const [username, setUsername] = useState("")
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+  
+    useEffect(() => {
+      socket = io(CONNECTION)
+      console.log(socket)
+    }, [CONNECTION])
   
     const connectToRoom = () => {
-      console.log("connect to room")
       socket.emit("joinRoom", room)
+      setIsLoggedIn(true)
     }
 
+    console.log(room)
+
     return (
-		<div className="join-container">
+        !isLoggedIn ?
+		(<div className="join-container">
 			<header className="join-header">
 				<h1><i className="fas fa-smile"></i>Let's Chat!</h1>
 			</header>
@@ -44,10 +54,13 @@ const ChatLoginScreen = () => {
                         <option value="Java">Java</option>
                     </select>
 					{/* </div> */}
-					<button type="submit" className="btn" onClick={(e) => connectToRoom()}>Join Chat</button>
+					<button type="submit" className="btn" onClick={connectToRoom}>Join Chat</button>
 				</form>
 			</main>
-		</div>
+		</div>) :
+        (
+            <ChatScreen room={room} socket={socket}/>
+        )
     )
 }
 

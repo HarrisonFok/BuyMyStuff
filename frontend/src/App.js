@@ -35,8 +35,8 @@ const App = () => {
       <main className="py-3">
         <Container>
           <Switch>
-            <Route path="/chatLogin" component={ChatLoginScreen} />
-            <Route path="/chat.html" component={ChatScreen} />
+            <Route path="/chat" component={ChatLoginScreen} />
+            {/* <Route path="/chat.html" component={ChatScreen} /> */}
             <Route path="/order/:id" component={OrderScreen} />
             <Route path="/shipping" component={ShippingScreen} />
             <Route path="/payment" component={PaymentScreen} />

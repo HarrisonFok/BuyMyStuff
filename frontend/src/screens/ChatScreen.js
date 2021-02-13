@@ -1,28 +1,22 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
-import io from "socket.io-client"
 import { useEffect } from 'react';
 
-let socket;
-const CONNECTION = "localhost:3000/";
+const today = new Date()
 
-const ChatScreen = ({history, location}) => {
+const ChatScreen = (props) => {
+    console.log(props.socket)
     // Check to see if the user is logged in
     const userLogin = useSelector(state => state.userLogin);
     // look at user reducer to know what is stored inside the state
     const {userInfo} = userLogin;
-    let room = location.search.split("=")
-    room = room[room.length-1]
+    // let room = location.search.split("=")
+    // room = room[room.length-1]
 
     const [messageList, setMessageList] = useState([])
-    
-    useEffect(() => {
-        socket = io(CONNECTION)
-        // console.log("Connected: ", socket)
-    })
 
     useEffect(() => {
-        socket.on("receiveMessage", (data) => {
+        props.socket.on("receiveMessage", (data) => {
           console.log("receiveMessage socket: ", data)
           setMessageList([...messageList, data])
         })
@@ -32,7 +26,7 @@ const ChatScreen = ({history, location}) => {
     // Helper function to output message to DOM
     const outputMessage = async (message) => {
         const div = document.createElement("div")
-        const today = new Date()
+        // const today = new Date()
         // Add a class to the div
         div.classList.add("message")
         div.innerHTML = `<label class="meta"><span>${today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()} </span>${userInfo.name}</label>
@@ -49,13 +43,13 @@ const ChatScreen = ({history, location}) => {
         const msg = e.target.elements.msg.value
         // console.log(msg)
         let messageObj = {
-            room: room,
+            room: props.room,
             content: {
               author: userInfo.name,
               message: msg
             }
         }	   
-        await socket.emit("sendMessage", messageObj)
+        await props.socket.emit("sendMessage", messageObj)
         // setMessageList([...messageList, messageObj.content])
         outputMessage(msg)
         // Clear input
@@ -65,7 +59,7 @@ const ChatScreen = ({history, location}) => {
 
     const leaveRoom = (e) => {
         e.preventDefault()
-        history.push("/chatLogin")
+        props.history.push("/")
     }
 
     return (
@@ -77,11 +71,19 @@ const ChatScreen = ({history, location}) => {
             <main className="chat-main">
             <div className="chat-sidebar">
                 <h3><i className="fas fa-comments"></i> Room Name:</h3>
-                <h2 id="room-name">{room}</h2>
+                <h2 id="room-name">{props.room}</h2>
                 <h3><i className="fas fa-users"></i> Users</h3>
                 <ul id="users"></ul>
             </div>
             <div className="chat-messages">
+                {messageList.map((val,key) => {
+                    return (
+                        <div className="message">
+                            <label className="meta"><span>{today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()}</span> {val.author}</label> 
+                            {val.message}
+                        </div>
+                    )
+                })}
             </div>
             </main>
             <div className="chat-form-container">

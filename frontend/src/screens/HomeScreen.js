@@ -4,7 +4,7 @@ import React, {useEffect} from 'react'
 // useSelector - select part of the state
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from '../actions/productActions';
-import {Row, Col} from "react-bootstrap"
+import {Row, Col, Button} from "react-bootstrap"
 import Product from "../components/Product";
 import Message from '../components/Message';
 import Loader from '../components/Loader';
