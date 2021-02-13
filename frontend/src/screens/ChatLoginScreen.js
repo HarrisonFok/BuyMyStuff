@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import "../chat.css"
+import io from "socket.io-client"
+
+let socket;
+const CONNECTION = "localhost:3000/";
 
 const ChatLoginScreen = () => {
-    // Check to see if the user is logged in
-    const userLogin = useSelector(state => state.userLogin);
-    // look at user reducer to know what is stored inside the state
-    const {userInfo} = userLogin;
+    const [room, setRoom] = useState("")
+    const [username, setUsername] = useState("")
+  
+    useEffect(() => {
+      socket = io(CONNECTION)
+      console.log(socket)
+    }, [CONNECTION])
+  
+    const connectToRoom = () => {
+      socket.emit("joinRoom", room)
+    }
 
     return (
 		<div className="join-container">
@@ -22,13 +33,13 @@ const ChatLoginScreen = () => {
                         type="text"
                         name="username"
                         id="username"
-                        placeholder={userInfo.name}
-                        // value={userInfo.name}
+                        placeholder={username}
+                        onChange={(e) => {setUsername(e.target.value)}}
                         required
 					/>
 					{/* <div className="form-control"> */}
                     <label htmlFor="room">Room</label>
-                    <select name="room" id="room">
+                    <select name="room" id="room" onChange={(e) => {setRoom(e.target.value)}}>
                         <option value="JavaScript">JavaScript</option>
                         <option value="Python">Python</option>
                         <option value="PHP">PHP</option>
@@ -37,7 +48,7 @@ const ChatLoginScreen = () => {
                         <option value="Java">Java</option>
                     </select>
 					{/* </div> */}
-					<button type="submit" className="btn">Join Chat</button>
+					<button type="submit" className="btn" onClick={connectToRoom}>Join Chat</button>
 				</form>
 			</main>
 		</div>

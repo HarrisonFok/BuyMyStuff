@@ -63,8 +63,14 @@ io.on("connection", (socket) => {
 
     socket.on("joinRoom", (data) => {
         // data is the room name
-        socket.json(data)
+        socket.join(data)
+        console.log("data: ", data)
         console.log("user joined room" + data)
+    })
+
+    socket.on("sendMessage", (data) => {
+        console.log(data)
+        socket.to(data.room).emit("receiveMessage", data.content)
     })
 
     socket.on("disconnect", () => {

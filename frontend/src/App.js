@@ -26,6 +26,7 @@ import QuestionReplyScreen from './screens/QuestionReplyScreen';
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import ChatLoginScreen from './screens/ChatLoginScreen';
+import ChatScreen from './screens/ChatScreen';
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
         <Container>
           <Switch>
             <Route path="/chatLogin" component={ChatLoginScreen} />
+            <Route path="/chat.html" component={ChatScreen} />
             <Route path="/order/:id" component={OrderScreen} />
             <Route path="/shipping" component={ShippingScreen} />
             <Route path="/payment" component={PaymentScreen} />
