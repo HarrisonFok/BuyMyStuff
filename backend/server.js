@@ -56,7 +56,18 @@ const server = app.listen(PORT, console.log(`Server running in ${process.env.NOD
 // Just by this alone, http://localhost:5000/api/products will contain all products
 // Whenever you create .env, restart the server
 
-const connectedUsers = []
+let connectedUsers = []
+
+const distinctUsers = (arr) => {
+    let hash = {}, result = [];
+    for ( let i = 0, l = arr.length; i < l; ++i ) {
+        if ( !hash.hasOwnProperty(arr[i]) ) { 
+            hash[ arr[i] ] = true;
+            result.push(arr[i]);
+        }
+    }
+    return result;
+}
 
 const io = new Server(server)
 
@@ -68,6 +79,7 @@ io.on("connection", (socket) => {
         socket.join(room)
         console.log(`user ${username} joined room ${room}`)
         connectedUsers.push(username)
+        connectedUsers = distinctUsers(connectedUsers)
         socket.emit("usersList", connectedUsers)
         socket.broadcast.emit("broadcast", connectedUsers)
     })
