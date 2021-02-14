@@ -56,16 +56,20 @@ const server = app.listen(PORT, console.log(`Server running in ${process.env.NOD
 // Just by this alone, http://localhost:5000/api/products will contain all products
 // Whenever you create .env, restart the server
 
+const connectedUsers = []
+
 const io = new Server(server)
 
 io.on("connection", (socket) => {
     console.log(socket.id)
 
     socket.on("joinRoom", (data) => {
-        // data is the room name
-        socket.join(data)
-        console.log("data: ", data)
-        console.log("user joined room " + data)
+        const { username, room } = data
+        socket.join(room)
+        console.log(`user ${username} joined room ${room}`)
+        connectedUsers.push(username)
+        socket.emit("usersList", connectedUsers)
+        socket.broadcast.emit("broadcast", connectedUsers)
     })
 
     socket.on("sendMessage", (data) => {
@@ -75,5 +79,6 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("User disconnected")
+        socket.broadcast.emit("broadcast", connectedUsers)
     })
 })

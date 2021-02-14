@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { green } from 'colors';
 
 const today = new Date()
 
@@ -9,9 +10,10 @@ const ChatScreen = ({room, socket, history}) => {
     // Check to see if the user is logged in
     const userLogin = useSelector(state => state.userLogin);
     // look at user reducer to know what is stored inside the state
-    const {userInfo} = userLogin;
+    const { userInfo } = userLogin;
 
     const [messageList, setMessageList] = useState([])
+    const [usersList, setUsersList] = useState([])
 
     useEffect(() => {
         socket.on("receiveMessage", (data) => {
@@ -19,6 +21,14 @@ const ChatScreen = ({room, socket, history}) => {
           setMessageList([...messageList, data])
         })
         console.log("receiveMessage: ", messageList)
+        socket.on("usersList", (data) => {
+            console.log("useEffect usersList: ", data)
+            setUsersList(data)
+        })
+        console.log("usersList: ", usersList)
+        socket.on("broadcast", (data) => {
+            setUsersList(data)
+        })
     })
 
     // Helper function to output message to DOM
@@ -60,6 +70,10 @@ const ChatScreen = ({room, socket, history}) => {
         history.push("/")
     }
 
+    const listUsers = usersList.map((user) => 
+        <li key={user} style={{color: "green"}}>{user}</li>
+    )
+
     return (
         <div className="chat-container">
             <header className="chat-header">
@@ -71,14 +85,13 @@ const ChatScreen = ({room, socket, history}) => {
                 <h3><i className="fas fa-comments"></i> Room Name:</h3>
                 <h2 id="room-name">{room}</h2>
                 <h3><i className="fas fa-users"></i> Users</h3>
-                <ul id="users"></ul>
+                {listUsers}
             </div>
             <div className="chat-messages">
                 {messageList.map((val,key) => {
                     return (
                         <div className="message">
-                            <label className="meta"><span>{today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()}</span> {val.author}</label> 
-                            {val.message}
+                            <label className="meta"><span>{today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()}</span> {val.author}</label> {val.message}
                         </div>
                     )
                 })}

@@ -18,7 +18,7 @@ const ChatLoginScreen = ({history}) => {
     }, [CONNECTION])
   
     const connectToRoom = () => {
-      socket.emit("joinRoom", room)
+      socket.emit("joinRoom", { username, room })
       setIsLoggedIn(true)
     }
 
