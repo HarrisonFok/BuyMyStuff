@@ -14,6 +14,11 @@ import Meta from '../components/Meta';
 import { Link } from 'react-router-dom';
 
 const HomeScreen = ({match, history}) => {
+    // Check to see if the user is logged in
+    const userLogin = useSelector(state => state.userLogin);
+    // look at user reducer to know what is stored inside the state
+    const { userInfo } = userLogin;
+
     // Called keyword because we set that in App.js (/:keyword)
     const keyword = match.params.keyword;
     const pageNumber = match.params.pageNumber || 1;
@@ -38,7 +43,7 @@ const HomeScreen = ({match, history}) => {
     return (
         <>
             <Meta />
-            <a href="/chat"><Button>To Chat App</Button></a>
+            {userInfo.length !== 0 && <a href="/chat"><Button>To Chat App</Button></a>}
             {!keyword ? <ProductCarousel /> : <Link to="/" className="btn btn-light">Go Back</Link>}
             <h1>My Products</h1>
             {/* if error then output error */}

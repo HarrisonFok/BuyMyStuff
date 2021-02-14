@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { green } from 'colors';
 
 const today = new Date()
 
@@ -33,7 +32,6 @@ const ChatScreen = ({room, socket, history}) => {
     // Helper function to output message to DOM
     const outputMessage = async (message) => {
         const div = document.createElement("div")
-        // const today = new Date()
         // Add a class to the div
         div.classList.add("message")
         div.innerHTML = `<label class="meta"><span>${today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()} </span>${userInfo.name}</label>
@@ -57,7 +55,6 @@ const ChatScreen = ({room, socket, history}) => {
             }
         }	   
         await socket.emit("sendMessage", messageObj)
-        // setMessageList([...messageList, messageObj.content])
         outputMessage(msg)
         // Clear input
         e.target.elements.msg.value = ""
@@ -66,6 +63,7 @@ const ChatScreen = ({room, socket, history}) => {
 
     const leaveRoom = (e) => {
         e.preventDefault()
+        socket.disconnect()
         history.push("/")
     }
 
