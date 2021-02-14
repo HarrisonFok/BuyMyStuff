@@ -8,8 +8,13 @@ let socket;
 const CONNECTION = "localhost:3000/";
 
 const ChatLoginScreen = ({history}) => {
-    const [room, setRoom] = useState("JavaScript")
-    const [username, setUsername] = useState("")
+    // Check to see if the user is logged in
+    const userLogin = useSelector(state => state.userLogin);
+    // look at user reducer to know what is stored inside the state
+    const { userInfo } = userLogin;
+
+    const [room, setRoom] = useState("Conversations")
+    const [username, setUsername] = useState(userInfo.name)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
   
     useEffect(() => {
@@ -37,19 +42,15 @@ const ChatLoginScreen = ({history}) => {
                         type="text"
                         name="username"
                         id="username"
-                        placeholder={username}
-                        onChange={(e) => {setUsername(e.target.value)}}
-                        required
+                        value={userInfo.name}
+                        // onChange={(e) => {setUsername(e.target.value)}}
+                        disabled={true}
 					/>
 					{/* <div className="form-control"> */}
                     <label htmlFor="room">Room</label>
                     <select name="room" id="room" onChange={(e) => {setRoom(e.target.value)}}>
-                        <option value="JavaScript">JavaScript</option>
-                        <option value="Python">Python</option>
-                        <option value="PHP">PHP</option>
-                        <option value="C#">C#</option>
-                        <option value="Ruby">Ruby</option>
-                        <option value="Java">Java</option>
+                        <option value="Conversations">Conversations</option>
+                        <option value="Orders">Orders</option>
                     </select>
 					{/* </div> */}
 					<button type="submit" className="btn" onClick={connectToRoom}>Join Chat</button>

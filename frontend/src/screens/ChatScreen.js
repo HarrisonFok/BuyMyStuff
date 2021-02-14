@@ -6,7 +6,6 @@ import { green } from 'colors';
 const today = new Date()
 
 const ChatScreen = ({room, socket, history}) => {
-    // console.log(socket.clients(room))
     // Check to see if the user is logged in
     const userLogin = useSelector(state => state.userLogin);
     // look at user reducer to know what is stored inside the state
