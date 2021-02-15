@@ -58,15 +58,42 @@ const server = app.listen(PORT, console.log(`Server running in ${process.env.NOD
 
 let connectedUsers = []
 
+// Get room users
+const getRoomUsers = (room) => {
+    return connectedUsers.filter(user => user.room === room)
+}
+
+// User leaves chat
+const userLeave = (id) => {
+    // console.log("userLeave: ", connectedUsers)
+    // console.log("userLeave: ", id)
+    const index = connectedUsers.findIndex(user => user.socketId === id)
+    // console.log("userLeave: ", index)
+    if (index !== -1) {
+        // console.log(connectedUsers)
+        return connectedUsers.splice(index, 1)
+    }
+}
+
 const distinctUsers = (arr) => {
     let hash = {}, result = [];
+    // console.log("distinctUsers arr: ", arr)
     for ( let i = 0, l = arr.length; i < l; ++i ) {
-        if ( !hash.hasOwnProperty(arr[i]) ) { 
-            hash[ arr[i] ] = true;
+        if ( !hash.hasOwnProperty(arr[i].username) ) { 
+            hash[ arr[i].username ] = true;
             result.push(arr[i]);
         }
     }
+    // console.log("distinctUsers result: ", result)
     return result;
+}
+
+const getNamesList = (arr) => {
+    let res = []
+    for (let i=0; i < arr.length; ++i) {
+        res.push(arr[i].username)
+    }
+    return res
 }
 
 const io = new Server(server)
@@ -78,10 +105,12 @@ io.on("connection", (socket) => {
         const { username, room } = data
         socket.join(room)
         console.log(`user ${username} joined room ${room}`)
-        connectedUsers.push(username)
+        connectedUsers.push({ username, socketId: socket.id })
         connectedUsers = distinctUsers(connectedUsers)
-        socket.emit("usersList", connectedUsers)
-        socket.broadcast.emit("broadcast", connectedUsers)
+        const namesList = getNamesList(connectedUsers)
+        // console.log("joinRoom connectedUsers: ", namesList)
+        socket.emit("usersList", namesList)
+        socket.broadcast.emit("broadcast", namesList)
     })
 
     socket.on("sendMessage", (data) => {
@@ -91,7 +120,18 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("User disconnected")
-        
-        socket.broadcast.emit("broadcast", connectedUsers)
+        const user = userLeave(socket.id)
+        // console.log("disconnect user: ", user)
+        if (user) {
+            // Emit to everyone in the room
+            io.to(user.room).emit("message", `${user[0].username} has left the chat`)
+
+            // Send users and room info (want to take user away in the sidebar)
+            io.to(user.room).emit("roomUsers", {
+                room: user.room,
+                users: getRoomUsers(user.room)
+            })
+        }
+        socket.broadcast.emit("broadcast", getNamesList(connectedUsers))
     })
 })
