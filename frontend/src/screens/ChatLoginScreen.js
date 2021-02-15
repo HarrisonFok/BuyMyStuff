@@ -19,7 +19,7 @@ const ChatLoginScreen = ({history}) => {
   
     useEffect(() => {
       socket = io(CONNECTION)
-      console.log(socket)
+    //   console.log(socket)
     }, [CONNECTION])
   
     const connectToRoom = () => {

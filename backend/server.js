@@ -97,6 +97,9 @@ const getNamesList = (arr) => {
 }
 
 const io = new Server(server)
+io.eio.pingTimeout = 1000 * 60 * 300; // 5 hours
+io.eio.pingInterval = 5000;  // 5 seconds
+// socket.setTimeout(1000 * 60 * 300); // 5 hours
 
 io.on("connection", (socket) => {
     console.log(socket.id)
