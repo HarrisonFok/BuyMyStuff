@@ -104,6 +104,7 @@ export const payOrder = (orderId, paymentResult) => async(dispatch, getState) =>
 } 
 
 export const listMyOrders = () => async(dispatch, getState) => {
+    console.log("got here")
     // No need to pass anything because it knows who we are by our token
     try {
         dispatch({

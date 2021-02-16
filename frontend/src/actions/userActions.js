@@ -106,7 +106,7 @@ export const getUserDetails = (id) => async(dispatch, getState) => {
             }
         }
 
-        // Add the user
+        // Get the user details
         const { data } = await axios.get(`api/users/${id}`, config)
 
         dispatch({
