@@ -5,22 +5,10 @@ import Message from '../models/messageModel.js';
 // @route POST /api/messages
 // @access Private
 const addMessage = asyncHandler(async (req, res) => {
-    console.log("addMessage message: ", message)
     const { room, content } = req.body;
-    const { author, message } = content
-    const msg = new Message({ user: req.user._id, room, author, message });
-    const createdMessage = msg.save();
+    const message = new Message({ user: req.user._id, room, message: content.message });
+    const createdMessage = message.save();
     res.status(201).json(createdMessage)
 });
 
-// @desc Get all messages
-// @route GET /api/messages
-// @access Private
-const getMessages = asyncHandler(async (req, res) => {
-    const { room } = req.params
-    const messages = await Message.find({ room })
-    console.log("messages: ", messages)
-    res.json(messages)
-});
-
-export { addMessage, getMessages }
+export { addMessage }
