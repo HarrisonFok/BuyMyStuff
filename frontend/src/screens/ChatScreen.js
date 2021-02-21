@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { addMessage } from '../actions/messageActions';
+import { addMessage, getMessages } from '../actions/messageActions';
 
 const today = new Date()
 
@@ -12,6 +12,9 @@ const ChatScreen = ({room, socket, history}) => {
     const userLogin = useSelector(state => state.userLogin);
     // look at user reducer to know what is stored inside the state
     const { userInfo } = userLogin;
+
+    const messageAll = useSelector(state => state.messageAll);
+    const { messages } = messageAll;
 
     const [messageList, setMessageList] = useState([])
     const [usersList, setUsersList] = useState([])
@@ -31,7 +34,8 @@ const ChatScreen = ({room, socket, history}) => {
         socket.on("broadcast", (data) => {
             setUsersList(data)
         })
-    })
+        dispatch(getMessages(room))
+    }, [])
 
     // Helper function to output message to DOM
     const outputMessage = async (message) => {
@@ -76,6 +80,8 @@ const ChatScreen = ({room, socket, history}) => {
     const listUsers = usersList.map((user) => 
         <li key={user} style={{color: "green"}}>{user}</li>
     )
+
+    console.log(messages)
 
     return (
         <div className="chat-container">

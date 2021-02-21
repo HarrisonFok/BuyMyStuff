@@ -10,6 +10,7 @@ import { cartReducer } from "./reducers/cartReducers"
 import { userLoginReducer, userRegisterReducer, userDetailsReducer, userUpdateProfileReducer, userListReducer, userDeleteReducer, userUpdateReducer } from './reducers/userReducers';
 import { orderCreateReducer, orderDetailsReducer, orderPayReducer, orderDeliverReducer, orderListMyReducer, orderListReducer } from './reducers/orderReducers';
 import { questionsReducer, questionsAddReducer, questionsDeleteReducer, questionsEditReducer, getAllQuestionsReducer, replyQuestionReducer, commentsReducer, commentDeleteReducer } from './reducers/questionReducers';
+import { messageAllReducer } from './reducers/messageReducers';
 import { reducer as toastrReducer } from 'react-redux-toastr'
 
 // will have multiple reducers handling a certain piece of functionalities (eg. reducer for product)
@@ -24,6 +25,7 @@ const reducer = combineReducers({
     productReviewCreate: productReviewCreateReducer,
     productTopRated: productTopRatedReducer,
     cart: cartReducer,
+    messageAll: messageAllReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
