@@ -7,6 +7,10 @@ const messageSchema = mongoose.Schema({
         // adds a relationship between product and user
         ref: "User"
     },
+    username: {
+        type: String,
+        required: true
+    },
     room: {
         type: String, 
         required: true
