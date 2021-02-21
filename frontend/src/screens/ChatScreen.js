@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { addMessage } from '../actions/messageActions';
 
 const today = new Date()
 
 const ChatScreen = ({room, socket, history}) => {
+    const dispatch = useDispatch();
+
     // Check to see if the user is logged in
     const userLogin = useSelector(state => state.userLogin);
     // look at user reducer to know what is stored inside the state
@@ -17,8 +20,9 @@ const ChatScreen = ({room, socket, history}) => {
         socket.on("receiveMessage", (data) => {
           console.log("receiveMessage socket: ", data)
           setMessageList([...messageList, data])
+          console.log("messageList: ", messageList)
         })
-        console.log("receiveMessage: ", messageList)
+        // console.log("receiveMessage: ", messageList)
         socket.on("usersList", (data) => {
             console.log("useEffect usersList: ", data)
             setUsersList(data)
@@ -56,6 +60,8 @@ const ChatScreen = ({room, socket, history}) => {
         }	   
         await socket.emit("sendMessage", messageObj)
         outputMessage(msg)
+        // Add the message to the database
+        dispatch(addMessage(messageObj))
         // Clear input
         e.target.elements.msg.value = ""
         e.target.elements.msg.focus()

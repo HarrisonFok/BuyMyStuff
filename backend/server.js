@@ -6,11 +6,12 @@ import connectDB from './config/db.js';
 // import { createServer } from "http";
 import { Server } from "socket.io";
 import morgan from "morgan";
-import {notFound, errorHandler} from "./middleware/errorMiddleware.js"
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js"
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 
 dotenv.config()
 
@@ -33,8 +34,9 @@ app.get("/", (req, res) => {
 // Mount it -> for anything that goes to this, link to productRoutes
 app.use("/api/products", productRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/orders", orderRoutes)
-app.use("/api/upload", uploadRoutes)
+app.use("/api/orders", orderRoutes);
+app.use("/api/upload", uploadRoutes);
+app.use("/api/messages", messageRoutes);
 
 // When we're ready to make payment, hit this route and fetch the client id
 app.get("/api/config/paypal", (req, res) => res.send(process.env.PAYPAL_CLIENT_ID))
@@ -98,7 +100,7 @@ const getNamesList = (arr) => {
 
 const io = new Server(server)
 io.eio.pingTimeout = 1000 * 60 * 300; // 5 hours
-io.eio.pingInterval = 5000;  // 5 seconds
+io.eio.pingInterval = 50000000000000; 
 // socket.setTimeout(1000 * 60 * 300); // 5 hours
 
 io.on("connection", (socket) => {
