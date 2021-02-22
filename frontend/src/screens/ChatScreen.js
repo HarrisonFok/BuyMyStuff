@@ -16,15 +16,15 @@ const ChatScreen = ({room, socket, history}) => {
     const messageAll = useSelector(state => state.messageAll);
     const { messages } = messageAll;
 
-    const [messageList, setMessageList] = useState([])
+    // const [messageList, setMessageList] = useState([])
     const [usersList, setUsersList] = useState([])
 
-    console.log("messages: ", messages)
+    // console.log("messages: ", messages)
 
     useEffect(() => {
         dispatch(getMessages(room))
         socket.on("receiveMessage", (data) => {
-          console.log("receiveMessage socket: ", data)
+          //   console.log("receiveMessage socket: ", data)
           console.log("new message in, dispatching getMessages again")
           dispatch(getMessages(room))
           //   console.log("messages: ", messages)
@@ -33,7 +33,7 @@ const ChatScreen = ({room, socket, history}) => {
             console.log("useEffect usersList: ", data)
             setUsersList(data)
         })
-        console.log("usersList: ", usersList)
+        // console.log("usersList: ", usersList)
         socket.on("broadcast", (data) => {
             setUsersList(data)
         })
