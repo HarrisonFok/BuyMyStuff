@@ -106,7 +106,6 @@ io.eio.pingInterval = 50000000000000;
 // Assign socket to every event so that it'll be accessible in the backend
 app.use((req, res, next) => {
     req.io = io;
-    console.log("middleware io: ", io)
     next();
 });
 

@@ -25,12 +25,10 @@ const ChatScreen = ({room, socket, history}) => {
         dispatch(getMessages(room))
         socket.on("receiveMessage", (data) => {
           console.log("receiveMessage socket: ", data)
-          if (messages) {
-            setMessageList([...messages, data])
-          }
-          console.log("messages: ", messages)
+          console.log("new message in, dispatching getMessages again")
+          dispatch(getMessages(room))
+          //   console.log("messages: ", messages)
         })
-        // console.log("receiveMessage: ", messageList)
         socket.on("usersList", (data) => {
             console.log("useEffect usersList: ", data)
             setUsersList(data)
@@ -39,7 +37,7 @@ const ChatScreen = ({room, socket, history}) => {
         socket.on("broadcast", (data) => {
             setUsersList(data)
         })
-    }, [])
+    }, [dispatch])
 
     // Helper function to output message to DOM
     const outputMessage = async (message) => {
