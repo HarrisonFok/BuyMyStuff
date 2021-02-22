@@ -103,6 +103,13 @@ io.eio.pingTimeout = 1000 * 60 * 300; // 5 hours
 io.eio.pingInterval = 50000000000000; 
 // socket.setTimeout(1000 * 60 * 300); // 5 hours
 
+// Assign socket to every event so that it'll be accessible in the backend
+app.use((req, res, next) => {
+    req.io = io;
+    console.log("middleware io: ", io)
+    next();
+});
+
 io.on("connection", (socket) => {
     console.log(socket.id)
 
@@ -120,7 +127,7 @@ io.on("connection", (socket) => {
 
     socket.on("sendMessage", (data) => {
         console.log("sendMessage server: ", data)
-        socket.to(data.room).emit("receiveMessage", data.content)
+        socket.to(data.room).emit("receiveMessage", data)
     })
 
     socket.on("disconnect", () => {

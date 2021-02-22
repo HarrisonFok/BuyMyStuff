@@ -19,11 +19,16 @@ const ChatScreen = ({room, socket, history}) => {
     const [messageList, setMessageList] = useState([])
     const [usersList, setUsersList] = useState([])
 
+    console.log("messages: ", messages)
+
     useEffect(() => {
+        dispatch(getMessages(room))
         socket.on("receiveMessage", (data) => {
           console.log("receiveMessage socket: ", data)
-          setMessageList([...messageList, data])
-          console.log("messageList: ", messageList)
+          if (messages) {
+            setMessageList([...messages, data])
+          }
+          console.log("messages: ", messages)
         })
         // console.log("receiveMessage: ", messageList)
         socket.on("usersList", (data) => {
@@ -34,7 +39,6 @@ const ChatScreen = ({room, socket, history}) => {
         socket.on("broadcast", (data) => {
             setUsersList(data)
         })
-        dispatch(getMessages(room))
     }, [])
 
     // Helper function to output message to DOM
@@ -97,7 +101,7 @@ const ChatScreen = ({room, socket, history}) => {
             <div className="chat-messages">
                 {messages && messages.map((val,key) => {
                     return (
-                        <div className="message">
+                        <div className="message" key={key}>
                             <label className="meta"><span>{today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()}</span> {val.username}</label> {val.message}
                         </div>
                     )

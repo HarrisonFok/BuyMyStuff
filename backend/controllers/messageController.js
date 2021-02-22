@@ -9,6 +9,10 @@ const addMessage = asyncHandler(async (req, res) => {
     const { author, message } = content
     const msg = new Message({ user: req.user._id, username: author, room, message: message });
     const createdMessage = msg.save();
+    console.log("before")
+    console.log(req.io)
+    // req.io.sockets.to(room).emit("receiveMessage", content);
+    console.log("after")
     res.status(201).json(createdMessage)
 });
 
@@ -18,7 +22,7 @@ const addMessage = asyncHandler(async (req, res) => {
 const getMessages = asyncHandler(async (req, res) => {
     const { room } = req.params
     const messages = await Message.find({ room })
-    console.log("messages: ", messages)
+    // console.log("messages: ", messages)
     res.json(messages)
 });
 
