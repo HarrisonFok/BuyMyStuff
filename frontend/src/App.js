@@ -26,7 +26,7 @@ import QuestionReplyScreen from './screens/QuestionReplyScreen';
 import ReduxToastr from 'react-redux-toastr'
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 import ChatLoginScreen from './screens/ChatLoginScreen';
-import ChatScreen from './screens/ChatScreen';
+// import ChatScreen from './screens/ChatScreen';
 
 const App = () => {
   return (

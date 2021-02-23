@@ -20,7 +20,7 @@ const ChatLoginScreen = ({history}) => {
     useEffect(() => {
       socket = io(CONNECTION)
     //   console.log(socket)
-    }, [CONNECTION])
+    }, [])
   
     const connectToRoom = () => {
       socket.emit("joinRoom", { username, room })

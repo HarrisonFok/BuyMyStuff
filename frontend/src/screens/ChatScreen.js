@@ -37,7 +37,7 @@ const ChatScreen = ({room, socket, history}) => {
         socket.on("broadcast", (data) => {
             setUsersList(data)
         })
-    }, [dispatch])
+    }, [dispatch, room, socket])
 
     // Helper function to output message to DOM
     const outputMessage = async (message) => {
