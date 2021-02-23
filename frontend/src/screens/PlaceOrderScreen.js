@@ -21,7 +21,7 @@ const PlaceOrderScreen = ({history}) => {
     // Calculate price of the items (0 is the start of the accumulator)
     cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0))
     // Calculate shipping
-    cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
+    cart.shippingPrice = addDecimals(cart.itemsPrice > 20 ? 0 : 5)
     // Calculate tax
     cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
     // Calculate total
