@@ -43,7 +43,7 @@ const HomeScreen = ({match, history}) => {
     return (
         <>
             <Meta />
-            {userInfo.length !== 0 && <a href="/chat"><Button>To Chat App</Button></a>}
+            {userInfo && userInfo.length !== 0 && <a href="/chat"><Button>To Chat App</Button></a>}
             {!keyword ? <ProductCarousel /> : <Link to="/" className="btn btn-light">Go Back</Link>}
             <h1>My Products</h1>
             {/* if error then output error */}
