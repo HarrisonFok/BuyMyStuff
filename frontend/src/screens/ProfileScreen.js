@@ -45,12 +45,12 @@ const ProfileScreen = ({history}) => {
             if (!user) {
                 // so that in the action, "profile" gets passed in and it'll reach /api/users/profile (and not a user id)
                 dispatch(getUserDetails("profile"))
-                // want it to display the list of my orders once the screen loads
-                dispatch(listMyOrders())
             } else {
                 // auto set in the form fields
                 setName(name)
                 setEmail(email)
+                // want it to display the list of my orders once the screen loads
+                dispatch(listMyOrders())
             }
         }
     }, [dispatch, history, userInfo, user, email, name])

@@ -1,33 +1,43 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { addMessage, getMessages } from '../actions/messageActions';
 
 const today = new Date()
 
 const ChatScreen = ({room, socket, history}) => {
+    const dispatch = useDispatch();
+
     // Check to see if the user is logged in
     const userLogin = useSelector(state => state.userLogin);
     // look at user reducer to know what is stored inside the state
     const { userInfo } = userLogin;
 
-    const [messageList, setMessageList] = useState([])
+    const messageAll = useSelector(state => state.messageAll);
+    const { messages } = messageAll;
+
+    // const [messageList, setMessageList] = useState([])
     const [usersList, setUsersList] = useState([])
 
+    // console.log("messages: ", messages)
+
     useEffect(() => {
+        dispatch(getMessages(room))
         socket.on("receiveMessage", (data) => {
-          console.log("receiveMessage socket: ", data)
-          setMessageList([...messageList, data])
+          //   console.log("receiveMessage socket: ", data)
+          console.log("new message in, dispatching getMessages again")
+          dispatch(getMessages(room))
+          //   console.log("messages: ", messages)
         })
-        console.log("receiveMessage: ", messageList)
         socket.on("usersList", (data) => {
             console.log("useEffect usersList: ", data)
             setUsersList(data)
         })
-        console.log("usersList: ", usersList)
+        // console.log("usersList: ", usersList)
         socket.on("broadcast", (data) => {
             setUsersList(data)
         })
-    })
+    }, [dispatch])
 
     // Helper function to output message to DOM
     const outputMessage = async (message) => {
@@ -56,6 +66,8 @@ const ChatScreen = ({room, socket, history}) => {
         }	   
         await socket.emit("sendMessage", messageObj)
         outputMessage(msg)
+        // Add the message to the database
+        dispatch(addMessage(messageObj))
         // Clear input
         e.target.elements.msg.value = ""
         e.target.elements.msg.focus()
@@ -85,10 +97,10 @@ const ChatScreen = ({room, socket, history}) => {
                 {listUsers}
             </div>
             <div className="chat-messages">
-                {messageList.map((val,key) => {
+                {messages && messages.map((val,key) => {
                     return (
-                        <div className="message">
-                            <label className="meta"><span>{today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()}</span> {val.author}</label> {val.message}
+                        <div className="message" key={key}>
+                            <label className="meta"><span>{today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()}</span> {val.username}</label> {val.message}
                         </div>
                     )
                 })}
