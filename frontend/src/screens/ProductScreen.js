@@ -8,6 +8,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { PRODUCT_CREATE_REVIEW_RESET} from "../constants/productConstants"
 import Meta from '../components/Meta';
+import { toastr } from 'react-redux-toastr';
 
 const ProductScreen = ({history, match}) => {
     const [qty, setQty] = useState(1);
@@ -43,8 +44,12 @@ const ProductScreen = ({history, match}) => {
 
     // Want product id and the quantity in the query string
     const addToCartHandler = () => {
-        // props.history.push() will just redirect
-        history.push(`/cart/${match.params.id}?qty=${qty}`);
+        if (!Object.keys(userInfo).length === 0) {
+            // props.history.push() will just redirect
+            history.push(`/cart/${match.params.id}?qty=${qty}`);
+        } else {
+            toastr.error("Please Sign In to add to cart")
+        }
     };
 
     const submitHandler = (e) => {
@@ -160,7 +165,7 @@ const ProductScreen = ({history, match}) => {
                                 <h2>Write a Customer Review</h2>
                                 {errorProductReview && <Message variant="danger">{errorProductReview}</Message>}
                                 {/* Only if logged in */}
-                                {userInfo ? 
+                                {Object.keys(userInfo).length !== 0 ? 
                                 (
                                     <Form onSubmit={submitHandler}>
                                         <Form.Group controlId="rating">
