@@ -44,7 +44,7 @@ const ChatScreen = ({room, socket, history}) => {
         const div = document.createElement("div")
         // Add a class to the div
         div.classList.add("message")
-        div.innerHTML = `<label class="meta"><span>${today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()} </span>${userInfo.name}</label>
+        div.innerHTML = `<label class="meta">${userInfo.name}</label>
         <label class="text">
             ${message}
         </label>`
