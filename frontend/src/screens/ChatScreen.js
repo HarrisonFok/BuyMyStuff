@@ -100,7 +100,7 @@ const ChatScreen = ({room, socket, history}) => {
                 {messages && messages.map((val,key) => {
                     return (
                         <div className="message" key={key}>
-                            <label className="meta"><span>{today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + "  " + today.getHours() + ':' + today.getMinutes()}</span> {val.username}</label> {val.message}
+                            <label className="meta">{val.username}</label> {val.message}
                         </div>
                     )
                 })}
