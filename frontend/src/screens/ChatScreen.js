@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { addMessage, getMessages } from '../actions/messageActions';
@@ -38,6 +38,12 @@ const ChatScreen = ({room, socket, history}) => {
             setUsersList(data)
         })
     }, [dispatch, room, socket])
+
+    const ScrollToBottom = () => {
+        const chatContainerRef = useRef()
+        useEffect(() => chatContainerRef.current.scrollIntoView())
+        return <div ref={chatContainerRef} />
+    }
 
     // Helper function to output message to DOM
     const outputMessage = async (message) => {
@@ -104,6 +110,7 @@ const ChatScreen = ({room, socket, history}) => {
                         </div>
                     )
                 })}
+                <ScrollToBottom />
             </div>
             </main>
             <div className="chat-form-container">
