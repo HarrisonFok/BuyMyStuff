@@ -1,11 +1,12 @@
 import express from "express";
 const router = express.Router();
-import {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, deleteQuestion, editQuestion, getAllQuestions, replyQuestion, editComment, deleteComment, getComments} from "../controllers/userController.js";
+import {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, deleteQuestion, editQuestion, getAllQuestions, replyQuestion, editComment, deleteComment, getComments, forgotPassword} from "../controllers/userController.js";
 import { isAdmin, protect } from "../middleware/authMiddleware.js";
 
 router.route("/").post(registerUser).get(protect, isAdmin, getUsers)
 // router.route("/:id/questions/:qId").get(protect, getSingleQuestion)
 
+router.route("/:id/forgot-password").put(forgotPassword)
 // NEED TO ADD THE PROTECT BACK
 router.route("/:id/questions/:qId").delete(deleteQuestion).put(editQuestion)
 router.route("/:id/questions").post(addQuestion).get(getQuestions)

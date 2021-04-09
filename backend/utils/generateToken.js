@@ -6,4 +6,10 @@ const generateToken = userId => {
     })
 }
 
-export default generateToken; 
+const generateResetToken = userId => {
+    return jwt.sign({userId}, process.env.JWT_SECRET, {
+        expiresIn: "20m"
+    })
+}
+
+export { generateToken, generateResetToken }; 

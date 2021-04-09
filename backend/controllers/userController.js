@@ -2,8 +2,7 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import Question from '../models/questionModel.js';
 import Comment from '../models/commentModel.js';
-import generateToken from "../utils/generateToken.js"
-
+import { generateToken, generateResetToken } from "../utils/generateToken.js"
 
 // jwt.io
 
@@ -367,4 +366,29 @@ const getComments = asyncHandler(async (req, res) => {
     }
 });
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions, replyQuestion, editComment, deleteComment, getComments} 
+const forgotPassword = asyncHandler(async (req, res) => {
+    const userId = req.params.id
+    const { email } = req.body
+    const user = await User.findOne({ email })
+    console.log(user)
+
+    if (user) {
+        const token = generateResetToken(userId)
+        const data = {
+            from: "noreply@bmm.com",
+            to: email,
+            subject: "Password reset link",
+            html:`
+                <h2>Please click the following link to reset your password</h2>
+                <p>http://localhost:${process.env.PORT}/resetPassword/${token}</p>
+            `
+        }
+        await user.updateOne({resetLink: token})
+        res.json(user)
+    } else {
+        res.status(404)
+        throw new Error("User not found when resetting password")
+    }
+})
+
+export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, addQuestion, getQuestions, getSingleQuestion, editQuestion, deleteQuestion, getAllQuestions, replyQuestion, editComment, deleteComment, getComments, forgotPassword} 

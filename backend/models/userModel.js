@@ -39,6 +39,10 @@ const userSchema = mongoose.Schema({
         type: Boolean, 
         required: true,
         default: false
+    },
+    resetLink: {
+        type: String,
+        default: ""
     }
 }, {
     timestamps: true
